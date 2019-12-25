@@ -27,7 +27,7 @@
 					<argLine>
 						--illegal-access=permit
 					</argLine>
-                    <forkCount>0</forkCount>
+					<forkCount>0</forkCount>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -53,6 +53,23 @@
 					</execution>
 				</executions>
 			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<artifactId>exec-maven-plugin</artifactId> -->
+<!-- 				<version>1.6.0</version> -->
+<!-- 				<groupId>org.codehaus.mojo</groupId> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<phase>package</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>exec</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<executable>bash</executable> -->
+<!-- 							<commandlineArgs>prebuilt.sh</commandlineArgs> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 		</plugins>
 	</build>
 	<dependencies>

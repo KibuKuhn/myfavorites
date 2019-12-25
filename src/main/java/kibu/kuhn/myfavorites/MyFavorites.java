@@ -3,6 +3,7 @@ package kibu.kuhn.myfavorites;
 import java.awt.AWTException;
 import java.awt.Desktop;
 import java.awt.SystemTray;
+import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.io.File;
 import java.io.IOException;
@@ -52,6 +53,7 @@ public class MyFavorites {
 
   private void initUI() {
     try {
+      Toolkit.getDefaultToolkit().getSystemEventQueue().push(new XEventQueue());
       LookAndFeelInfo laf = IPreferencesService.get().getLaf();
       UIManager.setLookAndFeel(laf.getClassName());
       Locale locale = IPreferencesService.get().getLocale();
