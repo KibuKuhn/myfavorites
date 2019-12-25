@@ -15,7 +15,7 @@ import java.awt.event.WindowEvent;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
-import kibu.kuhn.myfavorites.prefs.PreferencesService;
+import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.drop.DropLabel;
 import kibu.kuhn.myfavorites.ui.drop.DropList;
 import kibu.kuhn.myfavorites.ui.drop.DropTargetHandler;
@@ -42,7 +42,7 @@ class ConfigMenu {
 
   private void init() {
     dialog =
-        new JDialog(null, Gui.get().getBundle().getString("configmenu.title"), APPLICATION_MODAL);
+        new JDialog(null, Gui.get().getI18n("configmenu.title"), APPLICATION_MODAL);
     dialog.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
@@ -79,7 +79,7 @@ class ConfigMenu {
   private void doClose(WindowEvent e) {
     dialog.dispose();
     dialog = null;
-    PreferencesService.get().saveItems(list(dropList.getModel().elements()));
+    IPreferencesService.get().saveItems(list(dropList.getModel().elements()));
     if (windowCloseAction == null) {
       return;
     }

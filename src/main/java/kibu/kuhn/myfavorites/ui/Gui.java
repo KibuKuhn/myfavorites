@@ -13,12 +13,12 @@ public class Gui {
 
   private final ResourceBundle bundle;
 
-  public Gui() {
+  private Gui() {
     bundle = ResourceBundle.getBundle("i18n");
   }
 
-  public ResourceBundle getBundle() {
-    return bundle;
+  public String getI18n(String key) {
+    return bundle.getString(key);
   }
 
   public void configure(TrayIcon trayIcon) {

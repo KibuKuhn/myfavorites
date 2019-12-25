@@ -11,7 +11,7 @@ class ExitAction extends AbstractMenuAction {
 
   ExitAction(Consumer<? super ActionEvent> action) {
     super(action);
-    putValue(SHORT_DESCRIPTION, Gui.get().getBundle().getString("mainmenu.buttonbar.button.exit"));
+    putValue(SHORT_DESCRIPTION, Gui.get().getI18n("mainmenu.buttonbar.button.exit"));
     putValue(SMALL_ICON, MyFavorites.createImage("cancel18", "exit"));
     putValue(ACTION_COMMAND_KEY, ButtonBar.ACTION_EXIT);
   }

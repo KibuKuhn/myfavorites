@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 import kibu.kuhn.myfavorites.MyFavorites;
 import kibu.kuhn.myfavorites.domain.Item;
 
-public class PreferencesService {
+class PreferencesService implements IPreferencesService {
 
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesService.class);
@@ -30,9 +30,9 @@ public class PreferencesService {
   static final String ITEMS = "items";
   private static final String CLEAN = "clean";
 
-  private static PreferencesService service = new PreferencesService();
+  private static IPreferencesService service = new PreferencesService();
 
-   public static PreferencesService get() {
+   static IPreferencesService get() {
      return service;
    }
 
@@ -52,7 +52,7 @@ public class PreferencesService {
     return Preferences.userNodeForPackage(MyFavorites.class);
   }
 
-  @SuppressWarnings("exports")
+  @Override
   public void saveItems (List<Item> items) {
     List<StorableItem> list = items.stream().map(StorableItem::new).collect(Collectors.toList());
     try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
@@ -68,7 +68,7 @@ public class PreferencesService {
     }
   }
 
-  @SuppressWarnings("exports")
+  @Override
   public  List<Item> getItems() {
     String items = getPreferences().get(ITEMS, null);
     if (items == null) {
@@ -80,70 +80,18 @@ public class PreferencesService {
     return prefs.getItems().stream().map(si -> Item.of(Paths.get(si.path), si.file)).collect(Collectors.toList());
   }
 
-  public static class ItemPrefs {
-    List<StorableItem> items;
-
-    private ItemPrefs(List<StorableItem> items) {
-      this.items = items;
-    }
-
-    public ItemPrefs() {}
-
-    public List<StorableItem> getItems() {
-      return items;
-    }
-
-    public void setItems(List<StorableItem> items) {
-      this.items = items;
-    }
-
-
-  }
-
-  public static class StorableItem {
-
-    private String path;
-    private boolean file;
-
-    public StorableItem() {}
-
-    private StorableItem(Item item) {
-      this.path = item.getPath().toString();
-      this.file = item.isFile();
-    }
-
-
-    public String getPath() {
-      return path;
-    }
-
-
-    public void setPath(String path) {
-      this.path = path;
-    }
-
-
-    public boolean isFile() {
-      return file;
-    }
-
-
-    public void setFile(boolean file) {
-      this.file = file;
-    }
-  }
-
-  @SuppressWarnings("exports")
+  @Override
   public void saveLaf(LookAndFeelInfo laf) {
     getPreferences().put(LAF, laf.getClassName());
 
   }
 
+  @Override
   public void saveLocale(Locale locale) {
     getPreferences().put(LOCALE, locale.getLanguage());
   }
 
-  @SuppressWarnings("exports")
+  @Override
   public LookAndFeelInfo getLaf() {
     String laf = getPreferences().get(LAF, UIManager.getSystemLookAndFeelClassName());
     //@formatter:off
@@ -154,6 +102,7 @@ public class PreferencesService {
     //@formatter:on
   }
 
+  @Override
   public Locale getLocale() {
     String locale = getPreferences().get(LOCALE, null);
     if (locale == null) {

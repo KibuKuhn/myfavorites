@@ -12,7 +12,7 @@ class ConfigAction extends AbstractMenuAction {
 
   ConfigAction(Consumer<? super ActionEvent> action) {
     super(action);
-    putValue(SHORT_DESCRIPTION, Gui.get().getBundle().getString("mainmenu.buttonbar.button.config"));
+    putValue(SHORT_DESCRIPTION, Gui.get(). getI18n("mainmenu.buttonbar.button.config"));
     putValue(SMALL_ICON, MyFavorites.createImage("favorites18", "config"));
     putValue(ACTION_COMMAND_KEY, ButtonBar.ACTION_CONFIG);
   }

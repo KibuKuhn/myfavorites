@@ -13,7 +13,7 @@ class HelpAction extends AbstractMenuAction {
 
   HelpAction(Consumer<? super ActionEvent> action) {
     super(action);
-    putValue(SHORT_DESCRIPTION, Gui.get().getBundle().getString("mainmenu.buttonbar.button.help"));
+    putValue(SHORT_DESCRIPTION, Gui.get().getI18n("mainmenu.buttonbar.button.help"));
     putValue(SMALL_ICON, MyFavorites.createImage("help18", "help"));
     putValue(ACTION_COMMAND_KEY, ACTION_HELP);
   }

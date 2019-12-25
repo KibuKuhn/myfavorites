@@ -10,7 +10,7 @@ public final class DropLabel extends JLabel {
   private static final long serialVersionUID = 1L;
 
   public DropLabel() {
-    super(Gui.get().getBundle().getString("configmenu.text"));
+    super(Gui.get().getI18n("configmenu.text"));
     setForeground(Color.GRAY);
     setHorizontalAlignment(CENTER);
   }

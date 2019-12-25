@@ -62,7 +62,7 @@ class HelpMenu {
 
   private void init() throws IOException {
     dialog =
-        new JDialog(null, Gui.get().getBundle().getString("helpmenu.title"), APPLICATION_MODAL);
+        new JDialog(null, Gui.get().getI18n("helpmenu.title"), APPLICATION_MODAL);
 
     dialog.addWindowListener(new WindowAdapter() {
       @Override
@@ -123,7 +123,7 @@ class HelpMenu {
   }
 
   private InputStream getStream() {
-    return getClass().getResourceAsStream("/" + Gui.get().getBundle().getString("help.html"));
+    return getClass().getResourceAsStream("/" + Gui.get().getI18n("help.html"));
   }
 
   private void openLink(URL url) {
@@ -132,11 +132,11 @@ class HelpMenu {
         Desktop.getDesktop().browse(url.toURI());
       } catch (Exception e) {
         LOGGER.error(e.getMessage(), e);
-        htmlPane.setText(String.format(Gui.get().getBundle().getString("HelpPane.error"), e.getLocalizedMessage()));
+        htmlPane.setText(String.format(Gui.get().getI18n("HelpPane.error"), e.getLocalizedMessage()));
       }
     }
     else {
-      htmlPane.setText(Gui.get().getBundle().getString("HelpPane.System.Web.Browser.not.supported"));
+      htmlPane.setText(Gui.get().getI18n("HelpPane.System.Web.Browser.not.supported"));
     }
 
   }

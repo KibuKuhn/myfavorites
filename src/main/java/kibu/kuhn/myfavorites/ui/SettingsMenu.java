@@ -34,7 +34,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import kibu.kuhn.myfavorites.prefs.PreferencesService;
+import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 
 class SettingsMenu {
 
@@ -61,9 +61,9 @@ class SettingsMenu {
     }
 
     messageAction.setEnabled(false);
-    LookAndFeelInfo laf = PreferencesService.get().getLaf();
+    LookAndFeelInfo laf = IPreferencesService.get().getLaf();
     lafs.setSelectedItem(laf);
-    Locale locale = PreferencesService.get().getLocale();
+    Locale locale = IPreferencesService.get().getLocale();
     locales.setSelectedItem(locale);
     messageAction.setEnabled(true);
     dialog.setVisible(visible);
@@ -72,7 +72,7 @@ class SettingsMenu {
 
   private void init() {
     dialog =
-        new JDialog(null, Gui.get().getBundle().getString("settingsmenu.title"), APPLICATION_MODAL);
+        new JDialog(null, Gui.get().getI18n("settingsmenu.title"), APPLICATION_MODAL);
 
     dialog.addWindowListener(new WindowAdapter() {
       @Override
@@ -92,7 +92,7 @@ class SettingsMenu {
     constraints.gridheight = 1;
     constraints.fill = NONE;
     constraints.anchor = WEST;
-    pane.add(new JLabel(Gui.get().getBundle().getString("settingsmenu.laf")), constraints);
+    pane.add(new JLabel(Gui.get().getI18n("settingsmenu.laf")), constraints);
 
     constraints.insets.right = 2;
     constraints.anchor = EAST;
@@ -114,7 +114,7 @@ class SettingsMenu {
     constraints.gridwidth = 1;
     constraints.weightx = 0;
     constraints.fill = NONE;
-    pane.add(new JLabel(Gui.get().getBundle().getString("settingsmenu.locale")), constraints);
+    pane.add(new JLabel(Gui.get().getI18n("settingsmenu.locale")), constraints);
 
     constraints.insets.right = 2;
     constraints.anchor = EAST;
@@ -155,8 +155,8 @@ class SettingsMenu {
   }
 
   private void saveSettings() {
-    PreferencesService.get().saveLaf((LookAndFeelInfo)lafs.getSelectedItem());
-    PreferencesService.get().saveLocale((Locale)locales.getSelectedItem());
+    IPreferencesService.get().saveLaf((LookAndFeelInfo)lafs.getSelectedItem());
+    IPreferencesService.get().saveLocale((Locale)locales.getSelectedItem());
   }
 
   private ComboBoxModel<Locale> createLocalesModel() {
@@ -200,7 +200,7 @@ class SettingsMenu {
         return;
       }
 
-      showMessage(Gui.get().getBundle().getString("settingsmenu.message"));
+      showMessage(Gui.get().getI18n("settingsmenu.message"));
     }
   }
 

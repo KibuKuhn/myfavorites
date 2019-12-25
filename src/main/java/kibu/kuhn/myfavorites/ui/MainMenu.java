@@ -2,6 +2,7 @@ package kibu.kuhn.myfavorites.ui;
 
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.NORTH;
+import static java.awt.BorderLayout.SOUTH;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Desktop;
@@ -24,12 +25,17 @@ import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import kibu.kuhn.myfavorites.domain.Item;
-import kibu.kuhn.myfavorites.prefs.PreferencesService;
+import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.buttonbar.ButtonBar;
 import kibu.kuhn.myfavorites.ui.drop.DropList;
 
 class MainMenu extends MouseAdapter {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(MainMenu.class);
 
   private JDialog dialog;
   private ConfigMenu configMenu;
@@ -62,6 +68,8 @@ class MainMenu extends MouseAdapter {
     }
 
   };
+
+  private JTextArea errorPane;
 
   MainMenu() {}
 
@@ -105,6 +113,8 @@ class MainMenu extends MouseAdapter {
     initDropListActions(items);
     initItems(items);
     pane.add(new JScrollPane(items), CENTER);
+    errorPane = new ErrorPane();
+    pane.add(errorPane, SOUTH);
     dialog.setUndecorated(true);
     dialog.setPreferredSize(new Dimension(200, 400));
     TrayIcon trayIcon = (TrayIcon) e.getSource();
@@ -126,7 +136,7 @@ class MainMenu extends MouseAdapter {
 
   private void initItems(DropList list) {
     if (list.getModel().size() == 0) {
-      List<Item> items = PreferencesService.get().getItems();
+      List<Item> items = IPreferencesService.get().getItems();
       list.getModel().addAll(items);
     }
   }
@@ -156,6 +166,7 @@ class MainMenu extends MouseAdapter {
 
   private class DropListActions extends MouseAdapter implements KeyListener, FocusListener {
 
+
     @Override
     public void mouseClicked(MouseEvent e) {
       if (e.getClickCount() != 2) {
@@ -176,11 +187,12 @@ class MainMenu extends MouseAdapter {
     }
 
     private void openItem(Item item) {
-      File file = item.getPath().toFile();
       try {
+        File file = item.getPath().toFile();
         Desktop.getDesktop().open(file);
       } catch (IOException ex) {
-        throw new IllegalStateException(ex);
+        LOGGER.error(ex.getMessage(), ex);
+        errorPane.setText(String.format(Gui.get().getI18n("mainmenu.path.invalid"), item.getPath()));
       }
     }
 

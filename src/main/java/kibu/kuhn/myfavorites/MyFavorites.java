@@ -16,7 +16,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import kibu.kuhn.myfavorites.prefs.PreferencesService;
+import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.Gui;
 
 public class MyFavorites {
@@ -52,9 +52,9 @@ public class MyFavorites {
 
   private void initUI() {
     try {
-      LookAndFeelInfo laf = PreferencesService.get().getLaf();
+      LookAndFeelInfo laf = IPreferencesService.get().getLaf();
       UIManager.setLookAndFeel(laf.getClassName());
-      Locale locale = PreferencesService.get().getLocale();
+      Locale locale = IPreferencesService.get().getLocale();
       Locale.setDefault(locale);
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
         | UnsupportedLookAndFeelException ex) {
@@ -95,11 +95,11 @@ public class MyFavorites {
     }
   }
 
-  private static boolean lockInstance(final String lockFile) {
+  private static boolean lockInstance(String lockFile) {
     try {
-      final File file = new File(lockFile);
-      final RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
-      final FileLock fileLock = randomAccessFile.getChannel().tryLock();
+      File file = new File(lockFile);
+      RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
+      FileLock fileLock = randomAccessFile.getChannel().tryLock();
       if (fileLock != null) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
