@@ -32,44 +32,36 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<configuration>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>kibu.kuhn.myfavorites.MyFavorites</mainClass>
-						</manifest>
-					</archive>
-				</configuration>
+				<artifactId>maven-shade-plugin</artifactId>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
-						<id>make-assembly</id>
 						<phase>package</phase>
 						<goals>
-							<goal>single</goal>
+							<goal>shade</goal>
 						</goals>
+						<configuration>
+							<filters>
+								<filter>
+									<artifact>*:*</artifact>
+									<excludes>
+										<exclude>META-INF/maven/**</exclude>
+									</excludes>
+								</filter>
+							</filters>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<manifestEntries>
+										<Main-Class>kibu.kuhn.myfavorites.MyFavorites</Main-Class>
+										<Built-By>Kibu Kuhn</Built-By>
+									</manifestEntries>
+								</transformer>
+							</transformers>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-<!-- 			<plugin> -->
-<!-- 				<artifactId>exec-maven-plugin</artifactId> -->
-<!-- 				<version>1.6.0</version> -->
-<!-- 				<groupId>org.codehaus.mojo</groupId> -->
-<!-- 				<executions> -->
-<!-- 					<execution> -->
-<!-- 						<phase>package</phase> -->
-<!-- 						<goals> -->
-<!-- 							<goal>exec</goal> -->
-<!-- 						</goals> -->
-<!-- 						<configuration> -->
-<!-- 							<executable>bash</executable> -->
-<!-- 							<commandlineArgs>prebuilt.sh</commandlineArgs> -->
-<!-- 						</configuration> -->
-<!-- 					</execution> -->
-<!-- 				</executions> -->
-<!-- 			</plugin> -->
 		</plugins>
 	</build>
 	<dependencies>
