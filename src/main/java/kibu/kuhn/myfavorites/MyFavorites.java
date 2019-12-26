@@ -1,24 +1,13 @@
 package kibu.kuhn.myfavorites;
 
-import java.awt.AWTException;
-import java.awt.Desktop;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.channels.FileLock;
-import java.util.Locale;
-import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import kibu.kuhn.myfavorites.prefs.IPreferencesService;
-import kibu.kuhn.myfavorites.ui.Gui;
+import kibu.kuhn.myfavorites.ui.IGui;
 
 public class MyFavorites {
 
@@ -33,57 +22,18 @@ public class MyFavorites {
       System.exit(0);
     }
 
-    UIManager.put("swing.boldMetal", Boolean.FALSE);
     SwingUtilities.invokeLater(MyFavorites::new);
   }
 
 
-  public MyFavorites() {
-    if (!SystemTray.isSupported()) {
-      LOGGER.error("SystemTray is not supported");
-      return;
+  MyFavorites() {
+    if (!IGui.get().checkSupport()) {
+      System.exit(0);
     }
 
-    if (!Desktop.isDesktopSupported()) {
-      LOGGER.error("Desktop is not supported");
-    }
-
-    initUI();
+    IGui.get().initUI();
   }
 
-  private void initUI() {
-    try {
-      Toolkit.getDefaultToolkit().getSystemEventQueue().push(new XEventQueue());
-      LookAndFeelInfo laf = IPreferencesService.get().getLaf();
-      UIManager.setLookAndFeel(laf.getClassName());
-      Locale locale = IPreferencesService.get().getLocale();
-      Locale.setDefault(locale);
-    } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
-        | UnsupportedLookAndFeelException ex) {
-      throw new IllegalStateException(ex.getMessage(), ex);
-    }
-    SystemTray tray = SystemTray.getSystemTray();
-    TrayIcon trayIcon = createTrayIcon();
-
-    try {
-      tray.add(trayIcon);
-    } catch (AWTException e) {
-      LOGGER.error("TrayIcon could not be added.");
-      return;
-    }
-  }
-
-
-  private TrayIcon createTrayIcon() {
-    TrayIcon trayIcon = new TrayIcon(createImage("list36", "tray icon").getImage());
-    Gui.get().configure(trayIcon);
-    return trayIcon;
-  }
-
-  @SuppressWarnings("exports")
-  public static ImageIcon createImage(String imageName, String description) {
-    return new ImageIcon(MyFavorites.class.getResource("/" + imageName + ".png"), description);
-  }
 
   private static void initLogging() {
     String logDir = System.getProperty("logDir");

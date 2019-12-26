@@ -4,7 +4,6 @@ import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.NORTH;
 import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
 import static java.util.Collections.list;
-import static kibu.kuhn.myfavorites.MyFavorites.createImage;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.dnd.DropTarget;
@@ -42,7 +41,7 @@ class ConfigMenu {
 
   private void init() {
     dialog =
-        new JDialog(null, Gui.get().getI18n("configmenu.title"), APPLICATION_MODAL);
+        new JDialog(null, IGui.get().getI18n("configmenu.title"), APPLICATION_MODAL);
     dialog.addWindowListener(new WindowAdapter() {
       @Override
       public void windowClosing(WindowEvent e) {
@@ -50,7 +49,7 @@ class ConfigMenu {
       };
     });
 
-    dialog.setIconImage(createImage("list36_filled", "list36").getImage());
+    dialog.setIconImage(IGui.get().createImage("list36_filled", "list36").getImage());
     dialog.getContentPane().setLayout(new BorderLayout());
     DropLabel dropLabel = new DropLabel();
     dialog.getContentPane().add(dropLabel, NORTH);

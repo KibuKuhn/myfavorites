@@ -8,7 +8,6 @@ import static java.awt.GridBagConstraints.NONE;
 import static java.awt.GridBagConstraints.RELATIVE;
 import static java.awt.GridBagConstraints.REMAINDER;
 import static java.awt.GridBagConstraints.WEST;
-import static kibu.kuhn.myfavorites.MyFavorites.createImage;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -72,7 +71,7 @@ class SettingsMenu {
 
   private void init() {
     dialog =
-        new JDialog(null, Gui.get().getI18n("settingsmenu.title"), APPLICATION_MODAL);
+        new JDialog(null, IGui.get().getI18n("settingsmenu.title"), APPLICATION_MODAL);
 
     dialog.addWindowListener(new WindowAdapter() {
       @Override
@@ -81,7 +80,7 @@ class SettingsMenu {
       };
     });
 
-    dialog.setIconImage(createImage("list36_filled", "list36").getImage());
+    dialog.setIconImage(IGui.get().createImage("list36_filled", "list36").getImage());
     Container pane = dialog.getContentPane();
     pane.setLayout(new GridBagLayout());
     GridBagConstraints constraints = new GridBagConstraints();
@@ -92,7 +91,7 @@ class SettingsMenu {
     constraints.gridheight = 1;
     constraints.fill = NONE;
     constraints.anchor = WEST;
-    pane.add(new JLabel(Gui.get().getI18n("settingsmenu.laf")), constraints);
+    pane.add(new JLabel(IGui.get().getI18n("settingsmenu.laf")), constraints);
 
     constraints.insets.right = 2;
     constraints.anchor = EAST;
@@ -114,7 +113,7 @@ class SettingsMenu {
     constraints.gridwidth = 1;
     constraints.weightx = 0;
     constraints.fill = NONE;
-    pane.add(new JLabel(Gui.get().getI18n("settingsmenu.locale")), constraints);
+    pane.add(new JLabel(IGui.get().getI18n("settingsmenu.locale")), constraints);
 
     constraints.insets.right = 2;
     constraints.anchor = EAST;
@@ -200,7 +199,7 @@ class SettingsMenu {
         return;
       }
 
-      showMessage(Gui.get().getI18n("settingsmenu.message"));
+      showMessage(IGui.get().getI18n("settingsmenu.message"));
     }
   }
 

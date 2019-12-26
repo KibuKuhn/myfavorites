@@ -39,7 +39,7 @@ class LocaleRenderer extends DefaultListCellRenderer {
 
     Icon icon = null;
     try {
-      icon = MyFavorites.createImage(iconname, "");
+      icon = IGui.get().createImage(iconname, "");
     } catch (Exception ex) {
       LOGGER.warn("Cannot load icon {}", iconname);
     } finally {

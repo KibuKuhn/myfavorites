@@ -6,14 +6,23 @@ public class StorableItem {
 
   String path;
   boolean file;
+  String alias;
 
   public StorableItem() {}
 
   StorableItem(Item item) {
     this.path = item.getPath().toString();
     this.file = item.isFile();
+    this.alias = item.getAlias();
   }
 
+  public String getAlias() {
+    return alias;
+  }
+
+  public void setAlias(String alias) {
+    this.alias = alias;
+  }
 
   public String getPath() {
     return path;

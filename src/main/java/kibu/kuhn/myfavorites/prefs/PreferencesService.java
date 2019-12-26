@@ -32,20 +32,20 @@ class PreferencesService implements IPreferencesService {
 
   private static IPreferencesService service = new PreferencesService();
 
-   static IPreferencesService get() {
-     return service;
-   }
+  static IPreferencesService get() {
+    return service;
+  }
 
-   PreferencesService() {
-     if (System.getProperty(CLEAN) != null) {
-       try {
+  PreferencesService() {
+    if (System.getProperty(CLEAN) != null) {
+      try {
         getPreferences().clear();
         LOGGER.info("Preferences cleaned");
       } catch (BackingStoreException e) {
         throw new IllegalStateException("Cannot delete preferences");
       }
-     }
-   }
+    }
+  }
 
 
   Preferences getPreferences() {
@@ -53,7 +53,7 @@ class PreferencesService implements IPreferencesService {
   }
 
   @Override
-  public void saveItems (List<Item> items) {
+  public void saveItems(List<Item> items) {
     List<StorableItem> list = items.stream().map(StorableItem::new).collect(Collectors.toList());
     try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
       XMLEncoder encoder = new XMLEncoder(out);
@@ -69,21 +69,30 @@ class PreferencesService implements IPreferencesService {
   }
 
   @Override
-  public  List<Item> getItems() {
+  public List<Item> getItems() {
     String items = getPreferences().get(ITEMS, null);
     if (items == null) {
       return Collections.emptyList();
     }
-    XMLDecoder decoder = new XMLDecoder(new ByteArrayInputStream(items.getBytes(StandardCharsets.UTF_8)));
+    XMLDecoder decoder =
+        new XMLDecoder(new ByteArrayInputStream(items.getBytes(StandardCharsets.UTF_8)));
     ItemPrefs prefs = (ItemPrefs) decoder.readObject();
     decoder.close();
-    return prefs.getItems().stream().map(si -> Item.of(Paths.get(si.path), si.file)).collect(Collectors.toList());
+    //@formatter:off
+    return prefs.getItems()
+                .stream()
+                .map(si -> {
+                            Item item = Item.of(Paths.get(si.path), si.file);
+                            item.setAlias(si.getAlias());
+                            return item;
+                           })
+                .collect(Collectors.toList());
+    //@formatter:on
   }
 
   @Override
   public void saveLaf(LookAndFeelInfo laf) {
     getPreferences().put(LAF, laf.getClassName());
-
   }
 
   @Override

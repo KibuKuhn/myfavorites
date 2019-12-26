@@ -1,6 +1,5 @@
 package kibu.kuhn.myfavorites.domain;
 
-import java.beans.Transient;
 import java.nio.file.Path;
 import java.util.Objects;
 import javax.swing.Icon;
@@ -11,12 +10,21 @@ public class Item {
   private Path path;
   private boolean file;
   private Icon icon;
+  private String alias;
 
   public static Item of(Path path, boolean file) {
     Item item = new Item();
     item.path = path;
     item.file = file;
     return item;
+  }
+
+  public String getAlias() {
+    return alias;
+  }
+
+  public void setAlias(String alias) {
+    this.alias = alias;
   }
 
   public Path getPath() {
@@ -32,7 +40,6 @@ public class Item {
     return Objects.hash(file, path);
   }
 
-  @Transient
   public Icon getIcon() {
     if (icon == null) {
         icon = FileSystemView.getFileSystemView().getSystemIcon(path.toFile());

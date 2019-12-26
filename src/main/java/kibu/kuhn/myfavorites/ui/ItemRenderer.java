@@ -22,6 +22,6 @@ public class ItemRenderer extends DefaultListCellRenderer {
   }
 
   private String getString(Item item) {
-    return item.getPath().getFileName().toString();
+    return item.getAlias() == null ? item.getPath().getFileName().toString() : item.getAlias();
   }
 }

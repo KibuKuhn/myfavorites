@@ -1,7 +1,6 @@
 package kibu.kuhn.myfavorites.ui;
 
 import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
-import static kibu.kuhn.myfavorites.MyFavorites.createImage;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Desktop;
@@ -62,7 +61,7 @@ class HelpMenu {
 
   private void init() throws IOException {
     dialog =
-        new JDialog(null, Gui.get().getI18n("helpmenu.title"), APPLICATION_MODAL);
+        new JDialog(null, IGui.get().getI18n("helpmenu.title"), APPLICATION_MODAL);
 
     dialog.addWindowListener(new WindowAdapter() {
       @Override
@@ -71,7 +70,7 @@ class HelpMenu {
       };
     });
 
-    dialog.setIconImage(createImage("list36_filled", "list36").getImage());
+    dialog.setIconImage(IGui.get().createImage("list36_filled", "list36").getImage());
     Container pane = (JPanel) dialog.getContentPane();
     pane.setLayout(new BorderLayout());
     htmlPane = new JEditorPane();
@@ -123,7 +122,7 @@ class HelpMenu {
   }
 
   private InputStream getStream() {
-    return getClass().getResourceAsStream("/" + Gui.get().getI18n("help.html"));
+    return getClass().getResourceAsStream("/" + IGui.get().getI18n("help.html"));
   }
 
   private void openLink(URL url) {
@@ -132,11 +131,11 @@ class HelpMenu {
         Desktop.getDesktop().browse(url.toURI());
       } catch (Exception e) {
         LOGGER.error(e.getMessage(), e);
-        htmlPane.setText(String.format(Gui.get().getI18n("HelpPane.error"), e.getLocalizedMessage()));
+        htmlPane.setText(String.format(IGui.get().getI18n("HelpPane.error"), e.getLocalizedMessage()));
       }
     }
     else {
-      htmlPane.setText(Gui.get().getI18n("HelpPane.System.Web.Browser.not.supported"));
+      htmlPane.setText(IGui.get().getI18n("HelpPane.System.Web.Browser.not.supported"));
     }
 
   }

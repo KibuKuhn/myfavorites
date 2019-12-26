@@ -192,7 +192,7 @@ class MainMenu extends MouseAdapter {
         Desktop.getDesktop().open(file);
       } catch (IOException ex) {
         LOGGER.error(ex.getMessage(), ex);
-        errorPane.setText(String.format(Gui.get().getI18n("mainmenu.path.invalid"), item.getPath()));
+        errorPane.setText(String.format(IGui.get().getI18n("mainmenu.path.invalid"), item.getPath()));
       }
     }
 

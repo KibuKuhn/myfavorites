@@ -17,6 +17,7 @@ public class DropListConfigAction extends KeyAdapter {
 
   private static UpDownHandler upHandler = new UpDownHandler(idx -> idx - 1, (idx, list) -> idx == 0);
   private static UpDownHandler downHandler = new UpDownHandler(idx -> idx + 1, (idx, list) -> (idx.intValue() >= list.getModel().getSize() - 1));
+  private AliasHandler aliasHandler = new AliasHandler();
 
   @Override
   public void keyPressed(KeyEvent e) {
@@ -29,6 +30,10 @@ public class DropListConfigAction extends KeyAdapter {
         break;
       case KeyEvent.VK_DELETE:
         deleteItem(e);
+        break;
+      case KeyEvent.VK_A:
+        aliasHandler.createAlias(e);
+        break;
     }
   }
 

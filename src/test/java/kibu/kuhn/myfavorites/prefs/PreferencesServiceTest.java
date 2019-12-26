@@ -36,7 +36,9 @@ public class PreferencesServiceTest {
   public void testDeAndSerialize() {
     List<Item> expectedItems = new ArrayList<>();
     for (int i=0; i < 4; i++) {
-      expectedItems.add(Item.of(Paths.get("path" + i++), i%2 == 0 ? true : false));
+      Item item = Item.of(Paths.get("path" + i++), i%2 == 0 ? true : false);
+      item.setAlias("alias" + i);
+      expectedItems.add(item);
     }
 
     when(service.getPreferences()).thenReturn(preferences);
