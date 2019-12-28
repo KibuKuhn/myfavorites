@@ -7,13 +7,11 @@ import java.awt.Toolkit;
 import java.awt.TrayIcon;
 import java.util.Locale;
 import java.util.ResourceBundle;
-import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import kibu.kuhn.myfavorites.MyFavorites;
 import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 
 class Gui implements IGui {
@@ -26,10 +24,11 @@ class Gui implements IGui {
     return GUI;
   }
 
-  private final ResourceBundle bundle;
+  private ResourceBundle bundle;
+  private TrayIcon trayIcon;
 
   private Gui() {
-    bundle = ResourceBundle.getBundle("i18n");
+    initI18n();
   }
 
   @Override
@@ -44,20 +43,18 @@ class Gui implements IGui {
   }
 
   private TrayIcon createTrayIcon() {
-    TrayIcon trayIcon = new TrayIcon(createImage("list36", "tray icon").getImage());
+    trayIcon = new TrayIcon(Icons.getImage("list36"));
     configure(trayIcon);
     return trayIcon;
   }
 
   @Override
-  public void initUI() {
+  public void init() {
     try {
       UIManager.put("swing.boldMetal", Boolean.FALSE);
-      Toolkit.getDefaultToolkit().getSystemEventQueue().push(new XEventQueue());
+      Toolkit.getDefaultToolkit().getSystemEventQueue().push(new XEventQueue(this::handleEventQueueException));
       LookAndFeelInfo laf = IPreferencesService.get().getLaf();
       UIManager.setLookAndFeel(laf.getClassName());
-      Locale locale = IPreferencesService.get().getLocale();
-      Locale.setDefault(locale);
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
         | UnsupportedLookAndFeelException ex) {
       throw new IllegalStateException(ex.getMessage(), ex);
@@ -73,9 +70,10 @@ class Gui implements IGui {
     }
   }
 
-  @Override
-  public ImageIcon createImage(String imageName, String description) {
-    return new ImageIcon(MyFavorites.class.getResource("/" + imageName + ".png"), description);
+  private void initI18n() {
+    Locale locale = IPreferencesService.get().getLocale();
+    Locale.setDefault(locale);
+    bundle = ResourceBundle.getBundle("i18n");
   }
 
   @Override
@@ -91,5 +89,10 @@ class Gui implements IGui {
     }
 
     return true;
+  }
+
+  private void handleEventQueueException(Throwable th) {
+    trayIcon.setImage(Icons.getImage("list36error"));
+    trayIcon.setToolTip(bundle.getString("trayicon.tooltip.error"));
   }
 }

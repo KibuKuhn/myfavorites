@@ -11,6 +11,9 @@ import kibu.kuhn.myfavorites.ui.IGui;
 
 public class MyFavorites {
 
+  public static final String LOG_DIR = "logDir";
+  public static final String LOG_FILE = "logFile";
+
   static {
     initLogging();
   }
@@ -31,16 +34,17 @@ public class MyFavorites {
       System.exit(0);
     }
 
-    IGui.get().initUI();
+    IGui.get().init();
   }
 
 
   private static void initLogging() {
-    String logDir = System.getProperty("logDir");
+    String logDir = System.getProperty(LOG_DIR);
     if (logDir == null) {
       logDir = System.getProperty("user.home");
-      System.setProperty("logDir", logDir);
+      System.setProperty(LOG_DIR, logDir);
     }
+    System.setProperty(LOG_FILE, ".myfavorites.log");
     String logLevel = System.getProperty("logLevel");
     if (logLevel == null) {
       System.setProperty("logLevel", "INFO");

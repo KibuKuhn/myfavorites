@@ -3,6 +3,7 @@ package kibu.kuhn.myfavorites.ui.buttonbar;
 import java.awt.event.ActionEvent;
 import java.util.function.Consumer;
 import kibu.kuhn.myfavorites.ui.IGui;
+import kibu.kuhn.myfavorites.ui.Icons;
 
 class ExitAction extends AbstractMenuAction {
 
@@ -11,7 +12,7 @@ class ExitAction extends AbstractMenuAction {
   ExitAction(Consumer<? super ActionEvent> action) {
     super(action);
     putValue(SHORT_DESCRIPTION, IGui.get().getI18n("mainmenu.buttonbar.button.exit"));
-    putValue(SMALL_ICON, IGui.get().createImage("cancel18", "exit"));
+    putValue(SMALL_ICON, Icons.getIcon("cancel18"));
     putValue(ACTION_COMMAND_KEY, ButtonBar.ACTION_EXIT);
   }
 }

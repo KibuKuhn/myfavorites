@@ -1,22 +1,34 @@
 package kibu.kuhn.myfavorites.domain;
 
+import static kibu.kuhn.myfavorites.domain.Item.Type.Item;
 import java.nio.file.Path;
 import java.util.Objects;
 import javax.swing.Icon;
 import javax.swing.filechooser.FileSystemView;
+import kibu.kuhn.myfavorites.ui.drop.FileFilter;
 
 public class Item {
 
-  private Path path;
-  private boolean file;
-  private Icon icon;
+  public enum Type {Item, DesktopItem};
+
+  Path path;
+  boolean file;
+  Icon icon;
   private String alias;
 
   public static Item of(Path path, boolean file) {
+    if (path.toString().endsWith(FileFilter.DESKTOP_SUFFIX)) {
+      return  DesktopItem.of(path);
+    }
+
     Item item = new Item();
     item.path = path;
     item.file = file;
     return item;
+  }
+
+  public Type getType() {
+    return Item;
   }
 
   public String getAlias() {

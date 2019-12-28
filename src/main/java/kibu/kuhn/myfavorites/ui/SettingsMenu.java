@@ -80,7 +80,7 @@ class SettingsMenu {
       };
     });
 
-    dialog.setIconImage(IGui.get().createImage("list36_filled", "list36").getImage());
+    dialog.setIconImage(Icons.getImage("list36_filled"));
     Container pane = dialog.getContentPane();
     pane.setLayout(new GridBagLayout());
     GridBagConstraints constraints = new GridBagConstraints();

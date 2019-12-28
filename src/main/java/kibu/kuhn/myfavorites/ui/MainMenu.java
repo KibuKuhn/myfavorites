@@ -5,7 +5,6 @@ import static java.awt.BorderLayout.NORTH;
 import static java.awt.BorderLayout.SOUTH;
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Point;
@@ -19,15 +18,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import kibu.kuhn.myfavorites.domain.Item;
 import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.buttonbar.ButtonBar;
@@ -35,12 +30,11 @@ import kibu.kuhn.myfavorites.ui.drop.DropList;
 
 class MainMenu extends MouseAdapter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(MainMenu.class);
-
   private JDialog dialog;
   private ConfigMenu configMenu;
   private SettingsMenu settingsMenu;
   private HelpMenu helpMenu;
+  private OpenItemHandler openItemHandler = new OpenItemHandler(this);
 
   private Consumer<? super ActionEvent> buttonbarAction = ae -> {
     switch (ae.getActionCommand()) {
@@ -183,17 +177,7 @@ class MainMenu extends MouseAdapter {
       }
 
       Item item = list.getSelectedValue();
-      openItem(item);
-    }
-
-    private void openItem(Item item) {
-      try {
-        File file = item.getPath().toFile();
-        Desktop.getDesktop().open(file);
-      } catch (IOException ex) {
-        LOGGER.error(ex.getMessage(), ex);
-        errorPane.setText(String.format(IGui.get().getI18n("mainmenu.path.invalid"), item.getPath()));
-      }
+      openItemHandler.openItem(item);
     }
 
     @Override
@@ -203,7 +187,7 @@ class MainMenu extends MouseAdapter {
       if (item == null) {
         return;
       }
-      openItem(item);
+      openItemHandler.openItem(item);
     }
 
     @Override
@@ -225,5 +209,9 @@ class MainMenu extends MouseAdapter {
     @Override
     public void focusLost(FocusEvent e) {}
 
+  }
+
+  void setErrorText(String text) {
+    errorPane.setText(text);;
   }
 }

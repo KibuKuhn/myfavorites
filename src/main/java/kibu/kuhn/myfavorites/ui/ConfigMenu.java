@@ -49,7 +49,7 @@ class ConfigMenu {
       };
     });
 
-    dialog.setIconImage(IGui.get().createImage("list36_filled", "list36").getImage());
+    dialog.setIconImage(Icons.getImage("list36_filled"));
     dialog.getContentPane().setLayout(new BorderLayout());
     DropLabel dropLabel = new DropLabel();
     dialog.getContentPane().add(dropLabel, NORTH);

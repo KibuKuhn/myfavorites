@@ -70,7 +70,7 @@ class HelpMenu {
       };
     });
 
-    dialog.setIconImage(IGui.get().createImage("list36_filled", "list36").getImage());
+    dialog.setIconImage(Icons.getImage("list36_filled"));
     Container pane = (JPanel) dialog.getContentPane();
     pane.setLayout(new BorderLayout());
     htmlPane = new JEditorPane();
@@ -144,7 +144,7 @@ class HelpMenu {
 
     private static Set<String> images = new HashSet<>();
     static {
-      Collections.addAll(images, "FAVORITES18", "MENU18", "HELP18", "CANCEL18");
+      Collections.addAll(images, "FAVORITES18", "MENU18", "HELP18", "CANCEL18", "LIST36ERROR");
     }
 
 

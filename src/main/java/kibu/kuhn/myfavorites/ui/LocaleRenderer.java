@@ -9,7 +9,6 @@ import javax.swing.Icon;
 import javax.swing.JList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import kibu.kuhn.myfavorites.MyFavorites;
 
 class LocaleRenderer extends DefaultListCellRenderer {
 
@@ -39,7 +38,7 @@ class LocaleRenderer extends DefaultListCellRenderer {
 
     Icon icon = null;
     try {
-      icon = IGui.get().createImage(iconname, "");
+      icon = Icons.getIcon(iconname);
     } catch (Exception ex) {
       LOGGER.warn("Cannot load icon {}", iconname);
     } finally {
