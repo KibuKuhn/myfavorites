@@ -182,11 +182,16 @@ class MainMenu extends MouseAdapter {
 
     @Override
     public void keyTyped(KeyEvent e) {
+      if (e.getKeyChar() != KeyEvent.VK_ENTER) {
+        return;
+      }
+
       DropList list = (DropList) e.getSource();
       Item item = list.getSelectedValue();
       if (item == null) {
         return;
       }
+
       openItemHandler.openItem(item);
     }
 

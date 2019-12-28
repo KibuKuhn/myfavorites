@@ -150,6 +150,9 @@ class HelpMenu {
 
     @Override
     public String apply(String line) {
+      if (!line.contains("<img")) {
+        return line;
+      }
       for (String img : images) {
         if (line.contains(img)) {
           line = line.replace(img, getImgeUrl(img));
