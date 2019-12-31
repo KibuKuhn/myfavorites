@@ -7,7 +7,7 @@ See src/main/resources/help.html for a brief manual.
 When started myfavorites displays a small icon in the system tray from where you can access it.
 Spported languages are english, german.
 
-#Issues
+# Issues
 * When started automatically the tray icon may not be visible.
 This is because the system tray is not yet up to support Java. See error log.
 You can start myfavorites with -Ddelay=&lt;your-delay-in-millis&gt;. Try 5000 millis if you get this problem.
