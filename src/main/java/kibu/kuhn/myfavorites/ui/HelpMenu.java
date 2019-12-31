@@ -74,7 +74,7 @@ class HelpMenu {
     Container pane = (JPanel) dialog.getContentPane();
     pane.setLayout(new BorderLayout());
     htmlPane = new JEditorPane();
-    htmlPane.setContentType("text/html");
+    htmlPane.setEditorKit(new XHTMLEditorKit());
     htmlPane.setEditable(false);
     htmlPane.setOpaque(true);
     htmlPane.setText(getText());

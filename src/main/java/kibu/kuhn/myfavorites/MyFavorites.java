@@ -25,6 +25,19 @@ public class MyFavorites {
       System.exit(0);
     }
 
+    if (System.getProperty("delay") != null) {
+      try {
+        String delay = System.getProperty("delay");
+        Thread currentThread = Thread.currentThread();
+        synchronized (currentThread) {
+          currentThread.wait(Integer.valueOf(delay));
+        }
+      } catch (Exception ex) {
+        LOGGER.error(ex.getMessage(), ex);
+        throw new IllegalStateException(ex);
+      }
+    }
+
     SwingUtilities.invokeLater(MyFavorites::new);
   }
 
