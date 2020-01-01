@@ -26,5 +26,6 @@ Manage favorites
 ![Manage favorites](myfav2.png)
 
 Display favorites
+Select an item. Double click or hit ENTER to open
 
 ![display favorites](myfav3.png)
