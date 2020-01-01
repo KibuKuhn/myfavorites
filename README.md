@@ -11,7 +11,7 @@ Spported languages are english, german.
 * When started automatically the tray icon may not be visible.
 This is because the system tray is not yet up to support Java. See error log.
 You can start myfavorites with -Ddelay=&lt;your-delay-in-millis&gt;. Try 5000 millis if you get this problem.
-* Curerently myfavoriites expects the system tray on top of the screen.
+* Currently myfavoriites expects the system tray on top of the screen.
 
 # Prebuilt version
 If you just want to use it, download archive file from the prebuilt folder. The archive contains a customized java 11 runtime as well.
