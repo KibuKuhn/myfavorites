@@ -1,9 +1,9 @@
 package kibu.kuhn.myfavorites.ui.drop;
 
 import javax.swing.DefaultListModel;
-import kibu.kuhn.myfavorites.domain.Item;
+import kibu.kuhn.myfavorites.domain.FileSystemItem;
 
-public class DropListModel extends DefaultListModel<Item> {
+public class DropListModel extends DefaultListModel<FileSystemItem> {
 
   private static final long serialVersionUID = 1L;
   

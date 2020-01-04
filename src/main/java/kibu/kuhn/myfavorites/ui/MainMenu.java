@@ -23,7 +23,7 @@ import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import kibu.kuhn.myfavorites.domain.Item;
+import kibu.kuhn.myfavorites.domain.FileSystemItem;
 import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.buttonbar.ButtonBar;
 import kibu.kuhn.myfavorites.ui.drop.DropList;
@@ -130,7 +130,7 @@ class MainMenu extends MouseAdapter {
 
   private void initItems(DropList list) {
     if (list.getModel().size() == 0) {
-      List<Item> items = IPreferencesService.get().getItems();
+      List<FileSystemItem> items = IPreferencesService.get().getItems();
       list.getModel().addAll(items);
     }
   }
@@ -176,7 +176,7 @@ class MainMenu extends MouseAdapter {
         return;
       }
 
-      Item item = list.getSelectedValue();
+      FileSystemItem item = list.getSelectedValue();
       openItemHandler.openItem(item);
     }
 
@@ -187,7 +187,7 @@ class MainMenu extends MouseAdapter {
       }
 
       DropList list = (DropList) e.getSource();
-      Item item = list.getSelectedValue();
+      FileSystemItem item = list.getSelectedValue();
       if (item == null) {
         return;
       }

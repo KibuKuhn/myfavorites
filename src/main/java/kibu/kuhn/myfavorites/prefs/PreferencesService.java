@@ -18,7 +18,7 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import kibu.kuhn.myfavorites.MyFavorites;
-import kibu.kuhn.myfavorites.domain.Item;
+import kibu.kuhn.myfavorites.domain.FileSystemItem;
 
 class PreferencesService implements IPreferencesService {
 
@@ -53,7 +53,7 @@ class PreferencesService implements IPreferencesService {
   }
 
   @Override
-  public void saveItems(List<Item> items) {
+  public void saveItems(List<FileSystemItem> items) {
     List<StorableItem> list = items.stream().map(StorableItem::new).collect(Collectors.toList());
     try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
       XMLEncoder encoder = new XMLEncoder(out);
@@ -69,7 +69,7 @@ class PreferencesService implements IPreferencesService {
   }
 
   @Override
-  public List<Item> getItems() {
+  public List<FileSystemItem> getItems() {
     String items = getPreferences().get(ITEMS, null);
     if (items == null) {
       return Collections.emptyList();
@@ -82,7 +82,7 @@ class PreferencesService implements IPreferencesService {
     return prefs.getItems()
                 .stream()
                 .map(si -> {
-                            Item item = Item.of(Paths.get(si.path), si.file);
+                            FileSystemItem item = FileSystemItem.of(Paths.get(si.path), si.file);
                             item.setAlias(si.getAlias());
                             return item;
                            })

@@ -22,7 +22,7 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import kibu.kuhn.myfavorites.domain.DesktopItem;
-import kibu.kuhn.myfavorites.domain.Item;
+import kibu.kuhn.myfavorites.domain.FileSystemItem;
 import kibu.kuhn.myfavorites.ui.drop.LineMapper;
 
 @ExtendWith(MockitoExtension.class)
@@ -77,7 +77,7 @@ class OpenItemHandlerTest {
     when(openItemHandler.getDesktop()).thenReturn(desktop);
     doNothing().when(desktop).browse(uriCaptor.capture());
 
-    Item item = Item.of(Paths.get(getClass().getResource("/OpenItemHandlerTest.desktop").toURI()), true);
+    FileSystemItem item = FileSystemItem.of(Paths.get(getClass().getResource("/OpenItemHandlerTest.desktop").toURI()), true);
     openItemHandler.openItem(item);
 
     assertThat(uriCaptor.getValue()).isEqualTo(new URL("https://kibukuhn.github.io/").toURI());
@@ -88,7 +88,7 @@ class OpenItemHandlerTest {
     when(openItemHandler.getDesktop()).thenReturn(desktop);
     doNothing().when(mainMenu).setErrorText(stringCaptor.capture());
 
-    Item item = Item.of(Paths.get(getClass().getResource("/OpenItemHandlerTestFail.desktop").toURI()), true);
+    FileSystemItem item = FileSystemItem.of(Paths.get(getClass().getResource("/OpenItemHandlerTestFail.desktop").toURI()), true);
     openItemHandler.openItem(item);
 
     assertThat(stringCaptor.getValue()).contains(((DesktopItem)item).getUrl());

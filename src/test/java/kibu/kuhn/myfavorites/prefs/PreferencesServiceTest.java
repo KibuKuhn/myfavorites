@@ -16,7 +16,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import kibu.kuhn.myfavorites.domain.Item;
+import kibu.kuhn.myfavorites.domain.FileSystemItem;
 import kibu.kuhn.myfavorites.prefs.PreferencesService;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,9 +34,9 @@ public class PreferencesServiceTest {
 
   @Test
   public void testDeAndSerialize() {
-    List<Item> expectedItems = new ArrayList<>();
+    List<FileSystemItem> expectedItems = new ArrayList<>();
     for (int i=0; i < 4; i++) {
-      Item item = Item.of(Paths.get("path" + i++), i%2 == 0 ? true : false);
+      FileSystemItem item = FileSystemItem.of(Paths.get("path" + i++), i%2 == 0 ? true : false);
       item.setAlias("alias" + i);
       expectedItems.add(item);
     }
@@ -50,7 +50,7 @@ public class PreferencesServiceTest {
 
     when(preferences.get(ITEMS, null)).thenReturn(xmlEncoded);
 
-    List<Item> actualItems = service.getItems();
+    List<FileSystemItem> actualItems = service.getItems();
 
     assertThat(actualItems).isEqualTo(expectedItems);
   }

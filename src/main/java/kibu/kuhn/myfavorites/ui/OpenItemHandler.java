@@ -1,5 +1,6 @@
 package kibu.kuhn.myfavorites.ui;
 
+import static kibu.kuhn.myfavorites.domain.Type.DesktopItem;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.net.URL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import kibu.kuhn.myfavorites.domain.DesktopItem;
-import kibu.kuhn.myfavorites.domain.Item;
+import kibu.kuhn.myfavorites.domain.FileSystemItem;
 
 class OpenItemHandler {
 
@@ -21,9 +22,9 @@ class OpenItemHandler {
     this.mainMenu = mainMenu;
   }
 
-  void openItem(Item item) {
+  void openItem(FileSystemItem item) {
     try {
-      if (item.getType() == Item.Type.DesktopItem) {
+      if (item.getType() == DesktopItem) {
         openDesktopFile((DesktopItem) item);
       } else {
         File file = item.getPath().toFile();

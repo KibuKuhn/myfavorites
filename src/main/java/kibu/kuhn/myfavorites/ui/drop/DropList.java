@@ -4,11 +4,11 @@ import static javax.swing.ListSelectionModel.SINGLE_SELECTION;
 import java.awt.event.KeyEvent;
 import javax.swing.JList;
 import javax.swing.ListModel;
-import kibu.kuhn.myfavorites.domain.Item;
-import kibu.kuhn.myfavorites.ui.DropListConfigAction;
+import kibu.kuhn.myfavorites.domain.FileSystemItem;
+import kibu.kuhn.myfavorites.ui.DropTreeConfigAction;
 import kibu.kuhn.myfavorites.ui.ItemRenderer;
 
-public class DropList extends JList<Item> {
+public class DropList extends JList<FileSystemItem> {
 
   private static final long serialVersionUID = 1L;
   
@@ -24,7 +24,7 @@ public class DropList extends JList<Item> {
   }
   
   @Override
-  public void setModel(ListModel<Item> model) {
+  public void setModel(ListModel<FileSystemItem> model) {
     if (!(model instanceof DropListModel)) {
       throw new IllegalArgumentException("Model is not a " + DropListModel.class.getSimpleName());
     }
@@ -33,7 +33,7 @@ public class DropList extends JList<Item> {
 
   @Override
   protected void processKeyEvent(KeyEvent e) {
-    if (DropListConfigAction.isCtrlUpDownKey(e)) {      
+    if (DropTreeConfigAction.isCtrlUpDownKey(e)) {      
       e.consume();
     }
     super.processKeyEvent(e);

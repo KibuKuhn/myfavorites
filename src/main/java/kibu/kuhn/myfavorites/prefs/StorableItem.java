@@ -1,7 +1,8 @@
 package kibu.kuhn.myfavorites.prefs;
 
 import kibu.kuhn.myfavorites.domain.DesktopItem;
-import kibu.kuhn.myfavorites.domain.Item;
+import kibu.kuhn.myfavorites.domain.FileSystemItem;
+import kibu.kuhn.myfavorites.domain.Type;
 
 public class StorableItem {
 
@@ -12,11 +13,11 @@ public class StorableItem {
 
   public StorableItem() {}
 
-  StorableItem(Item item) {
+  StorableItem(FileSystemItem item) {
     this.path = item.getPath().toString();
     this.file = item.isFile();
     this.alias = item.getAlias();
-    if (item.getType() == Item.Type.DesktopItem) {
+    if (item.getType() == Type.DesktopItem) {
       this.url =   ((DesktopItem)item).getUrl();
     }
   }

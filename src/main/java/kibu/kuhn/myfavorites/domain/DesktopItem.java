@@ -1,15 +1,17 @@
 package kibu.kuhn.myfavorites.domain;
 
-import static kibu.kuhn.myfavorites.domain.Item.Type.DesktopItem;
+
+import static kibu.kuhn.myfavorites.domain.Type.DesktopItem;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
 import kibu.kuhn.myfavorites.ui.Icons;
-import kibu.kuhn.myfavorites.ui.drop.FileFilter;
-import kibu.kuhn.myfavorites.ui.drop.LineMapper;
 
-public class DesktopItem extends Item {
+import kibu.kuhn.myfavorites.ui.drop.LineMapper;
+import kibu.kuhn.myfavorites.ui.drop.filter.FileFilter;
+
+public class DesktopItem extends FileSystemItem {
 
   private String url;
 

@@ -4,7 +4,7 @@ import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import kibu.kuhn.myfavorites.domain.Item;
+import kibu.kuhn.myfavorites.domain.FileSystemItem;
 
 public class ItemRenderer extends DefaultListCellRenderer {
 
@@ -13,7 +13,7 @@ public class ItemRenderer extends DefaultListCellRenderer {
   @Override
   public Component getListCellRendererComponent(JList<?> list, Object value, int index,
       boolean isSelected, boolean cellHasFocus) {
-    Item item = (Item) value;
+    FileSystemItem item = (FileSystemItem) value;
     value = getString(item);
     JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
     l.setIcon(item.getIcon());
@@ -21,7 +21,7 @@ public class ItemRenderer extends DefaultListCellRenderer {
     return l;
   }
 
-  private String getString(Item item) {
+  private String getString(FileSystemItem item) {
     return item.getAlias() == null ? item.getPath().getFileName().toString() : item.getAlias();
   }
 }

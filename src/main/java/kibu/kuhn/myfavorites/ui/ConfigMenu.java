@@ -3,7 +3,6 @@ package kibu.kuhn.myfavorites.ui;
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.NORTH;
 import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
-import static java.util.Collections.list;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.dnd.DropTarget;
@@ -14,18 +13,17 @@ import java.awt.event.WindowEvent;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
-import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.drop.DropLabel;
-import kibu.kuhn.myfavorites.ui.drop.DropList;
 import kibu.kuhn.myfavorites.ui.drop.DropTargetHandler;
+import kibu.kuhn.myfavorites.ui.drop.DropTree;
 
 class ConfigMenu {
-
-  private DropList dropList;
 
   private JDialog dialog;
 
   private Consumer<? super ComponentEvent> windowCloseAction;
+
+  private DropTree dropTree;
 
   ConfigMenu() {
     init();
@@ -53,10 +51,10 @@ class ConfigMenu {
     dialog.getContentPane().setLayout(new BorderLayout());
     DropLabel dropLabel = new DropLabel();
     dialog.getContentPane().add(dropLabel, NORTH);
-    dropList = new DropList();
-    DropListConfigAction action = new DropListConfigAction();
-    dropList.addKeyListener(action);
-    dialog.getContentPane().add(new JScrollPane(dropList), CENTER);
+    dropTree = new DropTree();
+    dialog.getContentPane().add(new JScrollPane(dropTree), CENTER);
+    DropTreeConfigAction action = new DropTreeConfigAction();
+    dropTree.addKeyListener(action);
     initDrop(dropLabel);
     dialog.pack();
     dialog.setSize(400, 400);
@@ -65,7 +63,7 @@ class ConfigMenu {
 
 
   private void initDrop(Component dndComp) {
-    DropTargetListener listener = new DropTargetHandler(dropList.getModel());
+    DropTargetListener listener = new DropTargetHandler(dropTree.getModel());
     new DropTarget(dndComp, listener);
   }
 
@@ -78,7 +76,7 @@ class ConfigMenu {
   private void doClose(WindowEvent e) {
     dialog.dispose();
     dialog = null;
-    IPreferencesService.get().saveItems(list(dropList.getModel().elements()));
+//    IPreferencesService.get().saveItems(list(dropList.getModel().elements()));
     if (windowCloseAction == null) {
       return;
     }
