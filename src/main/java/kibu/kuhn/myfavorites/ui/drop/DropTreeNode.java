@@ -16,4 +16,21 @@ public abstract class DropTreeNode extends DefaultMutableTreeNode {
   public Item getUserObject() {
     return (Item) super.getUserObject();
   }
+
+  @Override
+  public DropTreeNode getParent() {
+    return (DropTreeNode) super.getParent();
+  }
+
+  @Override
+  public DropTreeNode getChildAt(int index) {
+    return (DropTreeNode) super.getChildAt(index);
+  }
+
+  public void switchNodes(int index1, int index2) {
+    var node1 = children.get(index1);
+    var node2 = children.get(index2);
+    children.set(index1, node2);
+    children.set(index2, node1);
+  }
 }

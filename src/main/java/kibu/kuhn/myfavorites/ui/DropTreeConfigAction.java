@@ -1,16 +1,12 @@
 package kibu.kuhn.myfavorites.ui;
 
+import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.security.KeyStore;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import javax.swing.KeyStroke;
-import javax.swing.tree.TreePath;
-import kibu.kuhn.myfavorites.domain.FileSystemItem;
-import kibu.kuhn.myfavorites.domain.Item;
-import kibu.kuhn.myfavorites.ui.drop.DropList;
+import javax.swing.JOptionPane;
 import kibu.kuhn.myfavorites.ui.drop.DropTree;
 import kibu.kuhn.myfavorites.ui.drop.DropTreeNode;
 
@@ -22,13 +18,15 @@ public class DropTreeConfigAction extends KeyAdapter {
   }
 
   private static UpDownHandler upHandler =
-      new UpDownHandler(idx -> idx - 1, (idx, list) -> idx == 0);
-  private static UpDownHandler downHandler = new UpDownHandler(idx -> idx + 1,
-      (idx, list) -> (idx.intValue() >= list.getModel().getSize() - 1));
+      new UpDownHandler(idx -> idx - 1, (idx, count) -> idx == 0);
+
+  private static UpDownHandler downHandler =
+      new UpDownHandler(idx -> idx + 1, (idx, count) -> idx >= count - 1);
 
   private AliasHandler aliasHandler = new AliasHandler();
-  private BoxHandler slipBoxHandler = BoxHandler.get();
+  private BoxFactory boxHandler = BoxFactory.get();
   private CopyPasteHandler copyPasteHandler = new CopyPasteHandler();
+  private OpenCloseHandler openCloseHandler = new OpenCloseHandler();
 
   @Override
   public void keyPressed(KeyEvent e) {
@@ -46,40 +44,58 @@ public class DropTreeConfigAction extends KeyAdapter {
         aliasHandler.createAlias(e);
         break;
       case KeyEvent.VK_B:
-        slipBoxHandler.createBox(e);
+        boxHandler.createBox(e);
+        break;
+      case KeyEvent.VK_C:
+        copyPasteHandler.copy(e);
         break;
       case KeyEvent.VK_X:
         copyPasteHandler.cut(e);
         break;
-      case KeyEvent.VK_P:
+      case KeyEvent.VK_V:
         copyPasteHandler.paste(e);
         break;
+      case KeyEvent.VK_ENTER:
+        openCloseHandler.accept(e);
+        break;
+
     }
   }
 
   private void deleteElement(KeyEvent e) {
-    if (e.getKeyCode() != KeyEvent.VK_DELETE) {
-      return;
-    }
-
     var tree = (DropTree) e.getSource();
-    TreePath selectionPath = tree.getSelectionPath();
+    var selectionPath = tree.getSelectionPath();
     if (selectionPath == null) {
       return;
     }
-    DropTreeNode node = (DropTreeNode) selectionPath.getLastPathComponent();
-    tree.getModel().removeNodeFromParent(node);
+
+    var node = (DropTreeNode) selectionPath.getLastPathComponent();
+    if (node.isRoot()) {
+      return;
+    }
+    //@formatter:off
+    int answer = JOptionPane.showConfirmDialog(
+                                  (Component)e.getSource(),
+                                  IGui.get().getI18n("droptreeconfigaction.question.delete.message"),
+                                  IGui.get().getI18n("droptreeconfigaction.question.delete.title"),
+                                  JOptionPane.YES_NO_OPTION,
+                                  JOptionPane.QUESTION_MESSAGE,
+                                  Icons.getIcon("dead32"));
+    //@formatter:on
+    if (answer == JOptionPane.YES_OPTION) {
+      tree.getModel().removeNodeFromParent(node);
+    }
   }
 
   private static class UpDownHandler implements Consumer<KeyEvent> {
 
-    private Function<Integer, Integer> f;
-    private BiPredicate<Integer, DropList> p;
+    private Function<Integer, Integer> indexProvider;
+    private BiPredicate<Integer, Integer> tester;
 
 
-    private UpDownHandler(Function<Integer, Integer> f, BiPredicate<Integer, DropList> p) {
-      this.f = f;
-      this.p = p;
+    private UpDownHandler(Function<Integer, Integer> f, BiPredicate<Integer, Integer> p) {
+      this.indexProvider = f;
+      this.tester = p;
     }
 
     @Override
@@ -88,21 +104,31 @@ public class DropTreeConfigAction extends KeyAdapter {
         return;
       }
 
-      DropList list = (DropList) e.getSource();
-      FileSystemItem item = list.getSelectedValue();
-      if (item == null) {
+      var tree = (DropTree) e.getSource();
+      var path = tree.getSelectionPath();
+      if (path == null) {
         return;
       }
 
-      int selectedIndex = list.getSelectedIndex();
-      if (p.test(selectedIndex, list)) {
+      var node = (DropTreeNode) path.getLastPathComponent();
+      var model = tree.getModel();
+      if (node == model.getRoot()) {
         return;
       }
 
-      item = list.getModel().remove(selectedIndex);
-      int newIdx = f.apply(selectedIndex);
-      list.getModel().add(newIdx, item);
-      list.setSelectedIndex(newIdx);
+      var parent = node.getParent();
+      int index = model.getIndexOfChild(parent, node);
+      int childCount = parent.getChildCount();
+
+      if (tester.test(index, childCount)) {
+        return;
+      }
+
+      int newIndex = indexProvider.apply(index);
+      parent.switchNodes(index, newIndex);
+
+      model.nodeStructureChanged(parent);
+      tree.getSelectionModel().setSelectionPath(path);
     }
   };
 

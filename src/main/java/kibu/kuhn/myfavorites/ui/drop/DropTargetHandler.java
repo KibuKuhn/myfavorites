@@ -46,7 +46,6 @@ public final class DropTargetHandler extends DropTargetAdapter {
       } else {
         nodes.forEach(model::appendToRoot);
         LOGGER.debug("Nodes in root: {}", model.getRoot().getChildCount());
-        model.nodeStructureChanged(model.getRoot());
       }
     } catch (Exception ex) {
       dropState = false;

@@ -5,6 +5,9 @@ import java.awt.Desktop;
 import java.awt.SystemTray;
 import java.awt.Toolkit;
 import java.awt.TrayIcon;
+import java.awt.TrayIcon.MessageType;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.UIManager;
@@ -52,7 +55,8 @@ class Gui implements IGui {
   public void init() {
     try {
       UIManager.put("swing.boldMetal", Boolean.FALSE);
-      Toolkit.getDefaultToolkit().getSystemEventQueue().push(new XEventQueue(this::handleEventQueueException));
+      Toolkit.getDefaultToolkit().getSystemEventQueue()
+          .push(new XEventQueue(this::handleEventQueueException));
       LookAndFeelInfo laf = IPreferencesService.get().getLaf();
       UIManager.setLookAndFeel(laf.getClassName());
     } catch (ClassNotFoundException | InstantiationException | IllegalAccessException
@@ -93,6 +97,22 @@ class Gui implements IGui {
 
   private void handleEventQueueException(Throwable th) {
     trayIcon.setImage(Icons.getImage("list36error"));
-    trayIcon.setToolTip(bundle.getString("trayicon.tooltip.error"));
+    String message = bundle.getString("trayicon.tooltip.error");
+    trayIcon.setToolTip(message);
+    trayIcon.displayMessage(bundle.getString("trayicon.error.caption"), message
+        + String.format(bundle.getString("trayicon.error.ex"), th.getLocalizedMessage()),
+        MessageType.ERROR);
+    trayIcon.addMouseListener(new ExitHandler());
+  }
+
+  private static class ExitHandler extends MouseAdapter {
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      if (e.getButton() == MouseEvent.BUTTON1 && e.getModifiersEx() == MouseEvent.CTRL_DOWN_MASK) {
+        System.exit(0);
+      }
+    }
+
   }
 }

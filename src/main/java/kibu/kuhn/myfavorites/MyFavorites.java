@@ -3,7 +3,6 @@ package kibu.kuhn.myfavorites;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.nio.channels.FileLock;
 import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,8 +26,8 @@ public class MyFavorites {
 
     if (System.getProperty("delay") != null) {
       try {
-        String delay = System.getProperty("delay");
-        Thread currentThread = Thread.currentThread();
+        var delay = System.getProperty("delay");
+        var currentThread = Thread.currentThread();
         synchronized (currentThread) {
           currentThread.wait(Integer.valueOf(delay));
         }
@@ -52,7 +51,7 @@ public class MyFavorites {
 
 
   private static void initLogging() {
-    String logDir = System.getProperty(LOG_DIR);
+    var logDir = System.getProperty(LOG_DIR);
     if (logDir == null) {
       logDir = System.getProperty("user.home");
       System.setProperty(LOG_DIR, logDir);
@@ -66,9 +65,9 @@ public class MyFavorites {
 
   private static boolean lockInstance(String lockFile) {
     try {
-      File file = new File(lockFile);
-      RandomAccessFile randomAccessFile = new RandomAccessFile(file, "rw");
-      FileLock fileLock = randomAccessFile.getChannel().tryLock();
+      var file = new File(lockFile);
+      var randomAccessFile = new RandomAccessFile(file, "rw");
+      var fileLock = randomAccessFile.getChannel().tryLock();
       if (fileLock != null) {
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {

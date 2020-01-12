@@ -13,9 +13,11 @@ import java.awt.event.WindowEvent;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
+import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.drop.DropLabel;
 import kibu.kuhn.myfavorites.ui.drop.DropTargetHandler;
 import kibu.kuhn.myfavorites.ui.drop.DropTree;
+import kibu.kuhn.myfavorites.ui.drop.RootNode;
 
 class ConfigMenu {
 
@@ -76,10 +78,15 @@ class ConfigMenu {
   private void doClose(WindowEvent e) {
     dialog.dispose();
     dialog = null;
-//    IPreferencesService.get().saveItems(list(dropList.getModel().elements()));
+    saveFavorites();
     if (windowCloseAction == null) {
       return;
     }
     windowCloseAction.accept(e);
+  }
+
+  private void saveFavorites() {
+    RootNode root = dropTree.getModel().getRoot();
+    IPreferencesService.get().saveItems(root);
   }
 }

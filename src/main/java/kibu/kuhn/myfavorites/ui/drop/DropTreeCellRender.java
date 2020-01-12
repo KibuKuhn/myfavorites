@@ -19,9 +19,6 @@ public class DropTreeCellRender extends DefaultTreeCellRenderer {
   }
 
   private Icon getIcon(DropTreeNode node) {
-    if (node.isRoot()) {
-      return null;
-    }
     return node.getUserObject().getIcon();
   }
 }

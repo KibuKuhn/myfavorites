@@ -11,6 +11,10 @@ import kibu.kuhn.myfavorites.ui.drop.DropTreeNode;
 class AliasHandler {
 
   void createAlias(KeyEvent e) {
+    if (e.getModifiersEx() != KeyEvent.CTRL_DOWN_MASK) {
+      return;
+    }
+
     DropTree tree = (DropTree) e.getSource();
     TreePath selectionPath = tree.getSelectionPath();
     if (selectionPath == null) {
@@ -44,7 +48,7 @@ class AliasHandler {
   }
 
   private void setBoxName(DropTree tree, DropTreeNode node) {
-    Set<String> currentBoxNames = BoxHandler.get().getCurrentBoxNames(tree);
+    Set<String> currentBoxNames = BoxFactory.get().getCurrentBoxNames(tree);
     String alias = null;
     String title = null;
     //@formatter:off

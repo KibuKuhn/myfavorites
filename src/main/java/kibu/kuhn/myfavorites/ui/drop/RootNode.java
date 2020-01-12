@@ -1,22 +1,19 @@
 package kibu.kuhn.myfavorites.ui.drop;
 
-import java.util.Enumeration;
 import javax.swing.tree.MutableTreeNode;
-import javax.swing.tree.TreeNode;
+import kibu.kuhn.myfavorites.domain.RootItem;
 
 public class RootNode extends DropTreeNode {
 
   private static final long serialVersionUID = 1L;
 
-  @Override
-  public void setParent(MutableTreeNode newParent) {
-    throw new UnsupportedOperationException("RootNode does not allow parent");
+  public RootNode() {
+    super.setUserObject(new RootItem());
   }
 
   @Override
-  public TreeNode getParent() {
-    // TODO Auto-generated method stub
-    return super.getParent();
+  public void setParent(MutableTreeNode newParent) {
+    throw new UnsupportedOperationException("RootNode does not allow parent");
   }
 
   @Override
@@ -37,5 +34,10 @@ public class RootNode extends DropTreeNode {
   @Override
   public boolean isLeaf() {
     return false;
+  }
+
+  @Override
+  public void setUserObject(Object userObject) {
+    throw new UnsupportedOperationException("Root node does not allow user object");
   }
 }

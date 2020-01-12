@@ -1,3 +1,3 @@
 package kibu.kuhn.myfavorites.domain;
 
-public enum Type {FileSystemItem, DesktopItem, HyperlinkItem, BoxItem}
+public enum Type {FileSystemItem, DesktopItem, HyperlinkItem, BoxItem, Root}

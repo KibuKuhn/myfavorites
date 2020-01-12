@@ -5,7 +5,7 @@ import java.util.Objects;
 import javax.swing.Icon;
 import kibu.kuhn.myfavorites.ui.Icons;
 
-public class HyperlinkItem implements Item {
+public class HyperlinkItem implements CloneableItem, Cloneable {
 
   private URL link;
   private String alias;
@@ -58,5 +58,12 @@ public class HyperlinkItem implements Item {
     return Objects.equals(link, other.link);
   }
 
+  @Override
+  public HyperlinkItem clone() throws CloneNotSupportedException {
+    return (HyperlinkItem) super.clone();
+  }
 
+  public URL getURL() {
+    return link;
+  }
 }

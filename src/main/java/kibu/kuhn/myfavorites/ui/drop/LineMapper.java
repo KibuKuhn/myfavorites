@@ -22,8 +22,8 @@ public class LineMapper implements Collector<String, Map<String, String>, Map<St
     return (map, s) -> {
       int idx = s.indexOf('=');
       if (idx > 0) {
-        String key = s.substring(0, idx);
-        String value = s.substring(idx + 1);
+        var key = s.substring(0, idx);
+        var value = s.substring(idx + 1);
         if (map.containsKey(key)) {
           throw new IllegalStateException("Duplicate key " + key);
         }

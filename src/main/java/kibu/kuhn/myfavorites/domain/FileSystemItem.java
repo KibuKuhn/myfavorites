@@ -4,15 +4,14 @@ import static kibu.kuhn.myfavorites.domain.Type.FileSystemItem;
 import java.nio.file.Path;
 import java.util.Objects;
 import javax.swing.Icon;
-import javax.swing.filechooser.FileSystemView;
+import kibu.kuhn.myfavorites.ui.Icons;
 import kibu.kuhn.myfavorites.ui.drop.filter.FileFilter;
 
 
-public class FileSystemItem implements Item {
+public class FileSystemItem implements CloneableItem, Cloneable {
 
   Path path;
   boolean file;
-  Icon icon;
   private String alias;
 
   public static FileSystemItem of(Path path, boolean file) {
@@ -56,10 +55,7 @@ public class FileSystemItem implements Item {
 
   @Override
   public Icon getIcon() {
-    if (icon == null) {
-        icon = FileSystemView.getFileSystemView().getSystemIcon(path.toFile());
-    }
-    return icon;
+    return file ? Icons.getIcon("file18") : Icons.getIcon("folder18");
   }
 
   @Override
@@ -77,5 +73,10 @@ public class FileSystemItem implements Item {
   @Override
   public String getDisplayString() {
     return getPath().toString();
+  }
+
+  @Override
+  public FileSystemItem clone() throws CloneNotSupportedException {
+    return (FileSystemItem) super.clone();
   }
 }
