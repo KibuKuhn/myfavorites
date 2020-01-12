@@ -1,16 +1,16 @@
 package kibu.kuhn.myfavorites.prefs;
 
-import java.util.List;
+import java.io.File;
 import java.util.Locale;
 import javax.swing.UIManager.LookAndFeelInfo;
-import kibu.kuhn.myfavorites.domain.FileSystemItem;
+import kibu.kuhn.myfavorites.ui.drop.RootNode;
 
 
 public interface IPreferencesService {
 
-  void saveItems(List<FileSystemItem> items);
+  void saveItems(RootNode node);
 
-  List<FileSystemItem> getItems();
+  RootNode getItems();
 
   void saveLaf(LookAndFeelInfo laf);
 
@@ -23,4 +23,8 @@ public interface IPreferencesService {
   static IPreferencesService get() {
     return PreferencesService.get();
   }
+
+  File getExportPath();
+
+  void saveExportPath(String absolutePath);
 }

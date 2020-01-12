@@ -19,7 +19,7 @@ public class XHTMLEditorKit extends HTMLEditorKit {
 
     @Override
     public View create(Element elem) {
-      View view = super.create(elem);
+      var view = super.create(elem);
       if (view instanceof ImageView) {
         return new XImageView(elem);
       }

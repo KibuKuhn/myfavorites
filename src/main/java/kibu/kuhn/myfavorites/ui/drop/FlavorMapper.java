@@ -11,19 +11,19 @@ import java.util.function.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class FlavorMapper implements Function<DataFlavor, TransferData> {
+public class FlavorMapper implements Function<DataFlavor, TransferData> {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(FlavorMapper.class);
 
   private DropTargetDropEvent event;
 
-  FlavorMapper(DropTargetDropEvent event) {
+  public FlavorMapper(DropTargetDropEvent event) {
     this.event = event;
   }
 
   @Override
   public TransferData apply(DataFlavor flavor) {
-    Transferable transferable = event.getTransferable();
+    var transferable = event.getTransferable();
     try {
       var transferData = getData(transferable, flavor);
       LOGGER.debug("Files dropped: {}", transferData);
@@ -37,7 +37,7 @@ class FlavorMapper implements Function<DataFlavor, TransferData> {
   @SuppressWarnings("unchecked")
   private Collection<? extends Object> getData(Transferable t, DataFlavor f) throws UnsupportedFlavorException, IOException {
     LOGGER.debug("Files dropped: {}", t);
-    Object data = t.getTransferData(f);
+    var data = t.getTransferData(f);
     Collection<? extends Object> result = null;
     if (!(data instanceof Collection)) {
       result = Collections.singleton(data);

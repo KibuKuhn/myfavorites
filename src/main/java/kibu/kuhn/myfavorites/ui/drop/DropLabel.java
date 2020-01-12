@@ -10,14 +10,18 @@ public final class DropLabel extends JLabel {
   private static final long serialVersionUID = 1L;
 
   public DropLabel() {
-    super(IGui.get().getI18n("configmenu.text"));
+    this(IGui.get().getI18n("configmenu.text"));
+  }
+
+  public DropLabel(String text) {
+    super(text);
     setForeground(Color.GRAY);
     setHorizontalAlignment(CENTER);
   }
 
   @Override
   public Dimension getPreferredSize() {
-    Dimension size = super.getPreferredSize();
+    var size = super.getPreferredSize();
     size.height = 100;
     return size;
   }

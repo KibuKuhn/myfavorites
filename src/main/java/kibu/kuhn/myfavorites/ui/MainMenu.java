@@ -3,11 +3,12 @@ package kibu.kuhn.myfavorites.ui;
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.NORTH;
 import static java.awt.BorderLayout.SOUTH;
+import static kibu.kuhn.myfavorites.domain.Type.DesktopItem;
+import static kibu.kuhn.myfavorites.domain.Type.FileSystemItem;
+import static kibu.kuhn.myfavorites.domain.Type.HyperlinkItem;
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Point;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -18,15 +19,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.List;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import kibu.kuhn.myfavorites.domain.FileSystemItem;
 import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.buttonbar.ButtonBar;
-import kibu.kuhn.myfavorites.ui.drop.DropList;
+import kibu.kuhn.myfavorites.ui.drop.DropTree;
+import kibu.kuhn.myfavorites.ui.drop.DropTreeNode;
 
 class MainMenu extends MouseAdapter {
 
@@ -68,19 +68,19 @@ class MainMenu extends MouseAdapter {
   MainMenu() {}
 
   private HelpMenu createHelpMenu() {
-    HelpMenu menu = new HelpMenu();
+    var menu = new HelpMenu();
     menu.setWindowCloseAction(e -> helpMenu = null);
     return menu;
   }
 
   private SettingsMenu createSettingsMenu() {
-    SettingsMenu menu = new SettingsMenu();
+    var menu = new SettingsMenu();
     menu.setWindowCloseAction(e -> settingsMenu = null);
     return menu;
   }
 
   private ConfigMenu createConfigMenu() {
-    ConfigMenu menu = new ConfigMenu();
+    var menu = new ConfigMenu();
     menu.setWindowCloseAction(e -> configMenu = null);
     return menu;
   }
@@ -97,23 +97,23 @@ class MainMenu extends MouseAdapter {
     }
 
     dialog = new JDialog((Frame) null, false);
-    Close close = new Close();
+    var close = new Close();
     dialog.addWindowFocusListener(close);
     dialog.addWindowListener(close);
-    Container pane = dialog.getContentPane();
+    var pane = dialog.getContentPane();
     pane.setLayout(new BorderLayout());
     pane.add(new ButtonBar(buttonbarAction), NORTH);
-    DropList items = new DropList();
-    initDropListActions(items);
-    initItems(items);
-    pane.add(new JScrollPane(items), CENTER);
+    var tree = new DropTree();
+    initDropActions(tree);
+    initItems(tree);
+    pane.add(new JScrollPane(tree), CENTER);
     errorPane = new ErrorPane();
     pane.add(errorPane, SOUTH);
     dialog.setUndecorated(true);
     dialog.setPreferredSize(new Dimension(200, 400));
-    TrayIcon trayIcon = (TrayIcon) e.getSource();
-    Point locationOnScreen = e.getLocationOnScreen();
-    Dimension size = trayIcon.getSize();
+    var trayIcon = (TrayIcon) e.getSource();
+    var locationOnScreen = e.getLocationOnScreen();
+    var size = trayIcon.getSize();
     locationOnScreen.y = locationOnScreen.y + size.height;
     locationOnScreen.x = locationOnScreen.x - size.width/2;
     dialog.setLocation(locationOnScreen);
@@ -121,17 +121,21 @@ class MainMenu extends MouseAdapter {
     dialog.setVisible(true);
   }
 
-  private void initDropListActions(DropList list) {
-    DropListActions openItem = new DropListActions();
-    list.addKeyListener(openItem);
-    list.addMouseListener(openItem);
-    list.addFocusListener(openItem);
+  private void initDropActions(DropTree tree) {
+    var openItem = new DropListActions();
+    tree.addKeyListener(openItem);
+    tree.addMouseListener(openItem);
+    tree.addFocusListener(openItem);
   }
 
-  private void initItems(DropList list) {
-    if (list.getModel().size() == 0) {
-      List<FileSystemItem> items = IPreferencesService.get().getItems();
-      list.getModel().addAll(items);
+  private void initItems(DropTree tree) {
+    if (tree.getModel().getRoot().getChildren().isEmpty()) {
+      var root = IPreferencesService.get().getItems();
+      if (root == null) {
+        return;
+      }
+
+      tree.getModel().setRoot(root);
     }
   }
 
@@ -166,18 +170,23 @@ class MainMenu extends MouseAdapter {
       if (e.getClickCount() != 2) {
         return;
       }
-      DropList list = (DropList) e.getSource();
-      int index = list.locationToIndex(e.getPoint());
-      if (index < 0) {
+      var tree = (DropTree) e.getSource();
+      openItem(tree);
+    }
+
+    private void openItem(DropTree tree) {
+      var selectionPath = tree.getSelectionPath();
+      if (selectionPath == null) {
         return;
       }
 
-      if (index != list.getSelectedIndex()) {
+      var node = (DropTreeNode) selectionPath.getLastPathComponent();
+      var type = node.getItem().getType();
+      if (!(type == DesktopItem || type == FileSystemItem || type == HyperlinkItem)) {
         return;
       }
 
-      FileSystemItem item = list.getSelectedValue();
-      openItemHandler.openItem(item);
+      openItemHandler.openItem(node.getItem());
     }
 
     @Override
@@ -186,13 +195,8 @@ class MainMenu extends MouseAdapter {
         return;
       }
 
-      DropList list = (DropList) e.getSource();
-      FileSystemItem item = list.getSelectedValue();
-      if (item == null) {
-        return;
-      }
-
-      openItemHandler.openItem(item);
+      var tree = (DropTree) e.getSource();
+      openItem(tree);
     }
 
     @Override
@@ -203,12 +207,12 @@ class MainMenu extends MouseAdapter {
 
     @Override
     public void focusGained(FocusEvent e) {
-      DropList list = (DropList) e.getSource();
-      if (list.getSelectedIndex() >= 0) {
+      var tree = (DropTree) e.getSource();
+      if (tree.getSelectionPath() != null) {
         return;
       }
 
-      list.setSelectedIndex(0);
+      tree.setSelectionRow(0);
     }
 
     @Override

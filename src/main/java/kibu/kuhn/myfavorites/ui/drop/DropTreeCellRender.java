@@ -1,7 +1,6 @@
 package kibu.kuhn.myfavorites.ui.drop;
 
 import java.awt.Component;
-import javax.swing.Icon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
@@ -13,15 +12,8 @@ public class DropTreeCellRender extends DefaultTreeCellRenderer {
   public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel,
       boolean expanded, boolean leaf, int row, boolean hasFocus) {
 
-    Component component = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-    this.setIcon(getIcon((DropTreeNode)value));
+    var component = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
+    setIcon(((DropTreeNode)value).getItem().getIcon());
     return component;
-  }
-
-  private Icon getIcon(DropTreeNode node) {
-    if (node.isRoot()) {
-      return null;
-    }
-    return node.getUserObject().getIcon();
   }
 }

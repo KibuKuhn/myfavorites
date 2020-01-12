@@ -2,7 +2,6 @@ package kibu.kuhn.myfavorites.ui;
 
 import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
 import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Desktop;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
@@ -71,7 +70,7 @@ class HelpMenu {
     });
 
     dialog.setIconImage(Icons.getImage("list36_filled"));
-    Container pane = (JPanel) dialog.getContentPane();
+    var pane = (JPanel) dialog.getContentPane();
     pane.setLayout(new BorderLayout());
     htmlPane = new JEditorPane();
     htmlPane.setEditorKit(new XHTMLEditorKit());
@@ -112,9 +111,9 @@ class HelpMenu {
   }
 
   private String getText() {
-    BufferedReader reader = new BufferedReader(new InputStreamReader(getStream(), StandardCharsets.UTF_8));
+    var reader = new BufferedReader(new InputStreamReader(getStream(), StandardCharsets.UTF_8));
     //@formatter:off
-    String html = reader.lines()
+    var html = reader.lines()
                         .map(new ImageUrlGenerator())
                         .collect(Collectors.joining("\n"));
     //@formatter:on
@@ -163,7 +162,7 @@ class HelpMenu {
 
 
     private CharSequence getImgeUrl(String img) {
-      String imagename = img.toLowerCase();
+      var imagename = img.toLowerCase();
       return getClass().getResource("/" + imagename + ".png").toString();
     }
   }

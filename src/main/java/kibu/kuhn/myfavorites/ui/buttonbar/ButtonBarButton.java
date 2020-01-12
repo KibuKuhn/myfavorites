@@ -14,6 +14,7 @@ class ButtonBarButton extends JButton {
       setIconTextGap(0);
       setBorderPainted(false);
       setBorder(null);
+      setContentAreaFilled(false);
       setPreferredSize(new Dimension(32,32));
     }
 

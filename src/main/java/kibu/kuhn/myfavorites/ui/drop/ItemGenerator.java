@@ -19,7 +19,7 @@ class ItemGenerator implements Function<TransferData, List<Item>> {
   @SuppressWarnings("unchecked")
   @Override
   public List<Item> apply(TransferData t) {
-    Collection<? extends Object> data = t.getData();
+    var data = t.getData();
     if (t.getFlavor().isFlavorJavaFileListType()) {
       return createItems((Collection<File>)data);
     }

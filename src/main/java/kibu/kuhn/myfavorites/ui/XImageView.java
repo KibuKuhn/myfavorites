@@ -697,6 +697,7 @@ public class XImageView extends View {
      * Loads the image from the URL <code>getImageURL</code>. This should
      * only be invoked from <code>refreshImage</code>.
      */
+    @SuppressWarnings("rawtypes")
     private void loadImage() {
         URL src = getImageURL();
         Image newImage = null;
@@ -730,9 +731,6 @@ public class XImageView extends View {
         Image newImage = getImage();
 
         if (newImage != null) {
-            Element elem = getElement();
-            AttributeSet attr = elem.getAttributes();
-
             // Get the width/height and set the state ivar before calling
             // anything that might cause the image to be loaded, and thus the
             // ImageHandler to be called.

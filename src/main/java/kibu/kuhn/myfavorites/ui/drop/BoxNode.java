@@ -8,16 +8,27 @@ public class BoxNode extends DropTreeNode {
   private static final long serialVersionUID = 1L;
 
   public BoxNode() {
-    super.setUserObject(new BoxItem());
+    this(new BoxItem());
+  }
+
+  public BoxNode(BoxItem item) {
+    super.setUserObject(item);
   }
 
   @Override
-  public void setUserObject(Object userObject) {
-    throw new UnsupportedOperationException("setUserObject not supported");
+  public void setUserObject(Object item) {
+    throw new UnsupportedOperationException("setItem not supported");
   }
 
   @Override
-  public Item getUserObject() {
-    return super.getUserObject();
+  public void setItem(Item item) {
+    throw new UnsupportedOperationException("setItem not supported");
   }
+
+  @Override
+  public boolean isLeaf() {
+    return false;
+  }
+
+
 }

@@ -14,5 +14,4 @@ public interface Item {
   Icon getIcon();
 
   String getDisplayString();
-
 }

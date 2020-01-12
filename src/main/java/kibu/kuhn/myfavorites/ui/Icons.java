@@ -23,7 +23,7 @@ public class Icons {
   }
 
   private ImageIcon getImageIcon(String iconName) {
-    ImageIcon imageIcon = icons.get(iconName);
+    var imageIcon = icons.get(iconName);
     if (imageIcon == null) {
       imageIcon = new ImageIcon(getClass().getResource("/" + iconName + ".png"), iconName);
       icons.put(iconName, imageIcon);

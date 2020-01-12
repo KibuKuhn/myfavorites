@@ -1,11 +1,8 @@
 package kibu.kuhn.myfavorites.ui.drop;
 
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,17 +25,17 @@ public final class DropTargetHandler extends DropTargetAdapter {
     boolean dropState = true;
     try {
       event.acceptDrop(event.getDropAction());
-      Transferable transferable = event.getTransferable();
-      DataFlavor[] flavors = transferable.getTransferDataFlavors();
+      var transferable = event.getTransferable();
+      var flavors = transferable.getTransferDataFlavors();
       //@formatter:off
-      List<ItemTreeNode> nodes = Arrays.stream(flavors)
-                                       .filter(new FlavorFilter())
-                                       .map(new FlavorMapper(event))
-                                       .filter(new TransferDataFilter())
-                                       .map(new ItemGenerator())
-                                       .flatMap(items -> items.stream())
-                                       .map(ItemTreeNode::of)
-                                       .collect(Collectors.toList());
+      var nodes = Arrays.stream(flavors)
+                        .filter(new FlavorFilter())
+                        .map(new FlavorMapper(event))
+                        .filter(new TransferDataFilter())
+                        .map(new ItemGenerator())
+                        .flatMap(items -> items.stream())
+                        .map(ItemTreeNode::of)
+                        .collect(Collectors.toList());
       //@formatter:on
       if (nodes.isEmpty()) {
         LOGGER.debug("No nodes to add");
@@ -46,7 +43,6 @@ public final class DropTargetHandler extends DropTargetAdapter {
       } else {
         nodes.forEach(model::appendToRoot);
         LOGGER.debug("Nodes in root: {}", model.getRoot().getChildCount());
-        model.nodeStructureChanged(model.getRoot());
       }
     } catch (Exception ex) {
       dropState = false;

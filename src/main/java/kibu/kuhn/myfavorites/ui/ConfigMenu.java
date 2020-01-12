@@ -6,13 +6,13 @@ import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.dnd.DropTarget;
-import java.awt.dnd.DropTargetListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.function.Consumer;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
+import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.drop.DropLabel;
 import kibu.kuhn.myfavorites.ui.drop.DropTargetHandler;
 import kibu.kuhn.myfavorites.ui.drop.DropTree;
@@ -49,7 +49,7 @@ class ConfigMenu {
 
     dialog.setIconImage(Icons.getImage("list36_filled"));
     dialog.getContentPane().setLayout(new BorderLayout());
-    DropLabel dropLabel = new DropLabel();
+    var dropLabel = new DropLabel();
     dialog.getContentPane().add(dropLabel, NORTH);
     dropTree = new DropTree();
     dialog.getContentPane().add(new JScrollPane(dropTree), CENTER);
@@ -63,8 +63,7 @@ class ConfigMenu {
 
 
   private void initDrop(Component dndComp) {
-    DropTargetListener listener = new DropTargetHandler(dropTree.getModel());
-    new DropTarget(dndComp, listener);
+    new DropTarget(dndComp, new DropTargetHandler(dropTree.getModel()));
   }
 
 
@@ -76,10 +75,14 @@ class ConfigMenu {
   private void doClose(WindowEvent e) {
     dialog.dispose();
     dialog = null;
-//    IPreferencesService.get().saveItems(list(dropList.getModel().elements()));
+    saveFavorites();
     if (windowCloseAction == null) {
       return;
     }
     windowCloseAction.accept(e);
+  }
+
+  private void saveFavorites() {
+    IPreferencesService.get().saveItems(dropTree.getModel().getRoot());
   }
 }

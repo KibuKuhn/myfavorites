@@ -12,7 +12,6 @@ public class DropTreeModel extends DefaultTreeModel {
     return model;
   }
 
-
   private DropTreeModel() {
     super(new RootNode());
   }
@@ -22,14 +21,22 @@ public class DropTreeModel extends DefaultTreeModel {
     return (RootNode) super.getRoot();
   }
 
-  public DropTreeNode appendToRoot(DropTreeNode node) {
+  public DropTreeModel appendToRoot(DropTreeNode node) {
     if (node instanceof RootNode) {
       throw new IllegalStateException("Cannot append root node to root");
     }
 
-    DropTreeNode root = getRoot();
+    var root = getRoot();
     int childCount = getChildCount(getRoot());
     insertNodeInto(node, root, childCount);
-    return root;
+    return this;
+  }
+
+  public DropTreeModel appendToNode(DropTreeNode targetNode, DropTreeNode node) {
+    if (node.getParent() != null) {
+      removeNodeFromParent(node);
+    }
+    insertNodeInto(node, targetNode, targetNode.getChildCount());
+    return this;
   }
 }

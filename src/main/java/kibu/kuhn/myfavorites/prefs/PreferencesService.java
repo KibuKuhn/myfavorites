@@ -1,30 +1,23 @@
 package kibu.kuhn.myfavorites.prefs;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
+import java.io.File;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
-import java.util.stream.Collectors;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import kibu.kuhn.myfavorites.MyFavorites;
-import kibu.kuhn.myfavorites.domain.FileSystemItem;
+import kibu.kuhn.myfavorites.ui.drop.RootNode;
 
 class PreferencesService implements IPreferencesService {
 
-
   private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesService.class);
 
+  private static final String EXPORT_PATH = "exportpath";
   static final String LOCALE = "locale";
   static final String LAF = "laf";
   static final String ITEMS = "items";
@@ -35,6 +28,8 @@ class PreferencesService implements IPreferencesService {
   static IPreferencesService get() {
     return service;
   }
+
+  private NodeMapper mapper = new NodeMapper();
 
   PreferencesService() {
     if (System.getProperty(CLEAN) != null) {
@@ -53,41 +48,28 @@ class PreferencesService implements IPreferencesService {
   }
 
   @Override
-  public void saveItems(List<FileSystemItem> items) {
-    List<StorableItem> list = items.stream().map(StorableItem::new).collect(Collectors.toList());
-    try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
-      XMLEncoder encoder = new XMLEncoder(out);
-      encoder.writeObject(new ItemPrefs(list));
-      encoder.flush();
-      encoder.close();
-      out.close();
-      byte[] bytes = out.toByteArray();
-      getPreferences().put(ITEMS, new String(bytes, StandardCharsets.UTF_8));
-    } catch (Exception e) {
-      throw new RuntimeException(e);
+  public void saveItems(RootNode node) {
+    try {
+      var json = mapper.mapToJson(node);
+      getPreferences().put(ITEMS, json);
+    } catch (JsonProcessingException e) {
+      throw new IllegalStateException(e);
     }
   }
 
   @Override
-  public List<FileSystemItem> getItems() {
-    String items = getPreferences().get(ITEMS, null);
+  public RootNode getItems() {
+    var items = getPreferences().get(ITEMS, null);
     if (items == null) {
-      return Collections.emptyList();
+      return null;
     }
-    XMLDecoder decoder =
-        new XMLDecoder(new ByteArrayInputStream(items.getBytes(StandardCharsets.UTF_8)));
-    ItemPrefs prefs = (ItemPrefs) decoder.readObject();
-    decoder.close();
-    //@formatter:off
-    return prefs.getItems()
-                .stream()
-                .map(si -> {
-                            FileSystemItem item = FileSystemItem.of(Paths.get(si.path), si.file);
-                            item.setAlias(si.getAlias());
-                            return item;
-                           })
-                .collect(Collectors.toList());
-    //@formatter:on
+
+    try {
+      var node = (RootNode)mapper.mapToNode(items);
+      return node;
+    } catch (JsonProcessingException e) {
+      throw new IllegalStateException(e);
+    }
   }
 
   @Override
@@ -102,7 +84,7 @@ class PreferencesService implements IPreferencesService {
 
   @Override
   public LookAndFeelInfo getLaf() {
-    String laf = getPreferences().get(LAF, UIManager.getSystemLookAndFeelClassName());
+    var laf = getPreferences().get(LAF, UIManager.getSystemLookAndFeelClassName());
     //@formatter:off
     return Arrays.stream(UIManager.getInstalledLookAndFeels())
                  .filter(lf -> lf.getClassName().equals(laf))
@@ -113,11 +95,24 @@ class PreferencesService implements IPreferencesService {
 
   @Override
   public Locale getLocale() {
-    String locale = getPreferences().get(LOCALE, null);
+    var locale = getPreferences().get(LOCALE, null);
     if (locale == null) {
       return Locale.getDefault();
     }
 
     return Locale.forLanguageTag(locale);
+  }
+
+
+  @Override
+  public File getExportPath() {
+    var path = getPreferences().get(EXPORT_PATH, System.getProperty("user.dir"));
+    return new File(path);
+  }
+
+
+  @Override
+  public void saveExportPath(String path) {
+    getPreferences().put(EXPORT_PATH, path);
   }
 }

@@ -22,16 +22,16 @@ class LocaleRenderer extends DefaultListCellRenderer {
   public Component getListCellRendererComponent(JList<? extends Object> list, Object value,
       int index, boolean isSelected, boolean cellHasFocus) {
 
-    Locale locale = (Locale) value;
-    Component component = super.getListCellRendererComponent(list, locale.getDisplayLanguage(), index, isSelected,
+    var locale = (Locale) value;
+    var component = super.getListCellRendererComponent(list, locale.getDisplayLanguage(), index, isSelected,
         cellHasFocus);
-    Icon icon = getIcon(locale);
+    var icon = getIcon(locale);
     setIcon(icon);
     return component;
   }
 
   private Icon getIcon(Locale locale) {
-    String iconname = locale.getLanguage() + 25;
+    var iconname = locale.getLanguage() + 25;
     if (icons.containsKey(iconname)) {
       return icons.get(iconname);
     }

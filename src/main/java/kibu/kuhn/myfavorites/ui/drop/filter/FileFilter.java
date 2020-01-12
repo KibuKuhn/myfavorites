@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +22,7 @@ public class FileFilter implements Predicate<TransferData> {
   @Override
   public boolean test(TransferData t) {
     @SuppressWarnings("unchecked")
-    List<File> files = (List<File>) t.getData();
+    var files = (List<File>) t.getData();
     return files.stream().allMatch(file -> {
       try {
         if (file.isDirectory()) {
@@ -43,7 +42,7 @@ public class FileFilter implements Predicate<TransferData> {
   }
 
   private boolean analyze(File file) throws IOException {
-    Map<String, String> map = Files.readAllLines(file.toPath()).stream().collect(new LineMapper());
+    var map = Files.readAllLines(file.toPath()).stream().collect(new LineMapper());
     String value = map.get(KEY_TYPE);
     if (!TYPE_LINK.equals(value)) {
       return false;

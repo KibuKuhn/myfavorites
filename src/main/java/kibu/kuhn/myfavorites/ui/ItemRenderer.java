@@ -13,9 +13,9 @@ public class ItemRenderer extends DefaultListCellRenderer {
   @Override
   public Component getListCellRendererComponent(JList<?> list, Object value, int index,
       boolean isSelected, boolean cellHasFocus) {
-    FileSystemItem item = (FileSystemItem) value;
+    var item = (FileSystemItem) value;
     value = getString(item);
-    JLabel l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    var l = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
     l.setIcon(item.getIcon());
     l.setToolTipText(item.getPath().toString());
     return l;

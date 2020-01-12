@@ -13,7 +13,7 @@ class LafRenderer extends DefaultListCellRenderer {
   public Component getListCellRendererComponent(JList<? extends Object> list, Object value,
       int index, boolean isSelected, boolean cellHasFocus) {
 
-    LookAndFeelInfo laf = (LookAndFeelInfo) value;
+    var laf = (LookAndFeelInfo) value;
     return super.getListCellRendererComponent(list, laf.getName(), index, isSelected, cellHasFocus);
   }
 

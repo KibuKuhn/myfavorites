@@ -4,15 +4,14 @@ import static kibu.kuhn.myfavorites.domain.Type.FileSystemItem;
 import java.nio.file.Path;
 import java.util.Objects;
 import javax.swing.Icon;
-import javax.swing.filechooser.FileSystemView;
+import kibu.kuhn.myfavorites.ui.Icons;
 import kibu.kuhn.myfavorites.ui.drop.filter.FileFilter;
 
 
-public class FileSystemItem implements Item {
+public class FileSystemItem implements CloneableItem, Cloneable {
 
   Path path;
   boolean file;
-  Icon icon;
   private String alias;
 
   public static FileSystemItem of(Path path, boolean file) {
@@ -20,7 +19,7 @@ public class FileSystemItem implements Item {
       return  DesktopItem.of(path);
     }
 
-    FileSystemItem item = new FileSystemItem();
+    var item = new FileSystemItem();
     item.path = path;
     item.file = file;
     return item;
@@ -56,10 +55,15 @@ public class FileSystemItem implements Item {
 
   @Override
   public Icon getIcon() {
-    if (icon == null) {
-        icon = FileSystemView.getFileSystemView().getSystemIcon(path.toFile());
+    if (!file) {
+      return Icons.getIcon("folder18");
     }
-    return icon;
+
+    if (path.getFileName().toString().endsWith("eml")) {
+      return Icons.getIcon("email18");
+    }
+
+    return Icons.getIcon("file18");
   }
 
   @Override
@@ -70,12 +74,17 @@ public class FileSystemItem implements Item {
       return false;
     if (getClass() != obj.getClass())
       return false;
-    FileSystemItem other = (FileSystemItem) obj;
+    var other = (FileSystemItem) obj;
     return file == other.file && Objects.equals(path, other.path);
   }
 
   @Override
   public String getDisplayString() {
     return getPath().toString();
+  }
+
+  @Override
+  public FileSystemItem clone() throws CloneNotSupportedException {
+    return (FileSystemItem) super.clone();
   }
 }

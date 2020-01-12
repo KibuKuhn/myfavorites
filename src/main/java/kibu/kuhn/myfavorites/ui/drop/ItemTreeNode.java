@@ -7,23 +7,9 @@ public class ItemTreeNode extends DropTreeNode {
   private static final long serialVersionUID = 1L;
 
   public static ItemTreeNode of (Item item) {
-    ItemTreeNode node = new ItemTreeNode();
-    node.setUserObject(item);
+    var node = new ItemTreeNode();
+    node.setItem(item);
     return node;
-  }
-
-  @Override
-  public Item getUserObject() {
-    return (Item) super.getUserObject();
-  }
-
-  public void setUserObject(Item userObject) {
-    super.setUserObject(userObject);
-  }
-
-  @Override
-  public void setUserObject(Object userObject) {
-    super.setUserObject((Item)userObject);
   }
 
   @Override
