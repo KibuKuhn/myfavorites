@@ -27,4 +27,8 @@ public interface IPreferencesService {
   File getExportPath();
 
   void saveExportPath(String absolutePath);
+
+  void saveConfirmDeleteItem(boolean selected);
+
+  boolean isConfirmDeleteItem();
 }

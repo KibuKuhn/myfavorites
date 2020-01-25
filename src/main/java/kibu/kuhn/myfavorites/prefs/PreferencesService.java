@@ -15,6 +15,7 @@ import kibu.kuhn.myfavorites.ui.drop.RootNode;
 
 class PreferencesService implements IPreferencesService {
 
+
   private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesService.class);
 
   private static final String EXPORT_PATH = "exportpath";
@@ -22,6 +23,7 @@ class PreferencesService implements IPreferencesService {
   static final String LAF = "laf";
   static final String ITEMS = "items";
   private static final String CLEAN = "clean";
+  private static final String CONFIRM_DELETE_ITEM = "confirmDeleteItem";
 
   private static IPreferencesService service = new PreferencesService();
 
@@ -114,5 +116,17 @@ class PreferencesService implements IPreferencesService {
   @Override
   public void saveExportPath(String path) {
     getPreferences().put(EXPORT_PATH, path);
+  }
+
+
+  @Override
+  public void saveConfirmDeleteItem(boolean confirm) {
+    getPreferences().putBoolean(CONFIRM_DELETE_ITEM, confirm);
+  }
+
+
+  @Override
+  public boolean isConfirmDeleteItem() {
+    return getPreferences().getBoolean(CONFIRM_DELETE_ITEM, true);
   }
 }

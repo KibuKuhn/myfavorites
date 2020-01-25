@@ -138,6 +138,21 @@ public class SettingsMenu {
     locales.addActionListener(messageAction);
     pane.add(locales, constraints);
 
+    constraints.insets.top = 2;
+    constraints.anchor = WEST;
+    constraints.gridx = 0;
+    constraints.gridy = RELATIVE;
+    constraints.weightx = 1;
+    constraints.weighty = 0;
+    constraints.gridwidth = REMAINDER;
+    constraints.gridheight = 1;
+    constraints.fill = NONE;
+    JCheckBox chkbox = new JCheckBox(IGui.get().getI18n("settingsmenu.confim.delete"));
+    chkbox.setSelected(IPreferencesService.get().isConfirmDeleteItem());
+    chkbox.addActionListener(new ConfirmDeleteItemAction());
+
+    pane.add(chkbox, constraints);
+
     constraints.insets.top = 10;
     constraints.anchor = WEST;
     constraints.gridx = 0;
@@ -149,6 +164,7 @@ public class SettingsMenu {
     var xportButton = new XPortButton();
     xportButton.addActionListener(new XPortAction());
     pane.add(xportButton, constraints);
+
 
     constraints.insets.top = 2;
     constraints.anchor = WEST;
@@ -258,6 +274,15 @@ public class SettingsMenu {
     public void actionPerformed(ActionEvent e) {
       boolean visible = ((JCheckBox)e.getSource()).isSelected();
       xportPane.setVisible(visible);
+    }
+  }
+
+
+  private class ConfirmDeleteItemAction implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      IPreferencesService.get().saveConfirmDeleteItem(((JCheckBox)e.getSource()).isSelected());
     }
   }
 }

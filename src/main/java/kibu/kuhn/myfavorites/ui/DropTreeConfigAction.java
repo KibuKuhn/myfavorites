@@ -1,5 +1,17 @@
 package kibu.kuhn.myfavorites.ui;
 
+import static java.awt.event.KeyEvent.VK_A;
+import static java.awt.event.KeyEvent.VK_B;
+import static java.awt.event.KeyEvent.VK_C;
+import static java.awt.event.KeyEvent.VK_DELETE;
+import static java.awt.event.KeyEvent.VK_DOWN;
+import static java.awt.event.KeyEvent.VK_ENTER;
+import static java.awt.event.KeyEvent.VK_UP;
+import static java.awt.event.KeyEvent.VK_V;
+import static java.awt.event.KeyEvent.VK_X;
+import static javax.swing.JOptionPane.QUESTION_MESSAGE;
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static javax.swing.JOptionPane.YES_OPTION;
 import java.awt.Component;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -7,6 +19,7 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import javax.swing.JOptionPane;
+import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.drop.DropTree;
 import kibu.kuhn.myfavorites.ui.drop.DropTreeNode;
 
@@ -14,7 +27,7 @@ public class DropTreeConfigAction extends KeyAdapter {
 
   public static boolean isCtrlUpDownKey(KeyEvent e) {
     return (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK)
-        && (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_DOWN);
+        && (e.getKeyCode() == VK_UP || e.getKeyCode() == VK_DOWN);
   }
 
   private static UpDownHandler upHandler =
@@ -31,31 +44,31 @@ public class DropTreeConfigAction extends KeyAdapter {
   @Override
   public void keyPressed(KeyEvent e) {
     switch (e.getKeyCode()) {
-      case KeyEvent.VK_UP:
+      case VK_UP:
         upHandler.accept(e);
         break;
-      case KeyEvent.VK_DOWN:
+      case VK_DOWN:
         downHandler.accept(e);
         break;
-      case KeyEvent.VK_DELETE:
+      case VK_DELETE:
         deleteElement(e);
         break;
-      case KeyEvent.VK_A:
+      case VK_A:
         aliasHandler.createAlias(e);
         break;
-      case KeyEvent.VK_B:
+      case VK_B:
         boxHandler.createBox(e);
         break;
-      case KeyEvent.VK_C:
+      case VK_C:
         copyPasteHandler.copy(e);
         break;
-      case KeyEvent.VK_X:
+      case VK_X:
         copyPasteHandler.cut(e);
         break;
-      case KeyEvent.VK_V:
+      case VK_V:
         copyPasteHandler.paste(e);
         break;
-      case KeyEvent.VK_ENTER:
+      case VK_ENTER:
         openCloseHandler.accept(e);
         break;
 
@@ -63,6 +76,7 @@ public class DropTreeConfigAction extends KeyAdapter {
   }
 
   private void deleteElement(KeyEvent e) {
+
     var tree = (DropTree) e.getSource();
     var selectionPath = tree.getSelectionPath();
     if (selectionPath == null) {
@@ -73,16 +87,21 @@ public class DropTreeConfigAction extends KeyAdapter {
     if (node.isRoot()) {
       return;
     }
+
+    var answer = YES_OPTION;
+    if (IPreferencesService.get().isConfirmDeleteItem()) {
     //@formatter:off
-    int answer = JOptionPane.showConfirmDialog(
+      answer = JOptionPane.showConfirmDialog(
                                   (Component)e.getSource(),
                                   IGui.get().getI18n("droptreeconfigaction.question.delete.message"),
                                   IGui.get().getI18n("droptreeconfigaction.question.delete.title"),
-                                  JOptionPane.YES_NO_OPTION,
-                                  JOptionPane.QUESTION_MESSAGE,
+                                  YES_NO_OPTION,
+                                  QUESTION_MESSAGE,
                                   Icons.getIcon("dead32"));
+    }
+
     //@formatter:on
-    if (answer == JOptionPane.YES_OPTION) {
+    if (answer == YES_OPTION) {
       tree.getModel().removeNodeFromParent(node);
     }
   }
@@ -117,14 +136,14 @@ public class DropTreeConfigAction extends KeyAdapter {
       }
 
       var parent = node.getParent();
-      int index = model.getIndexOfChild(parent, node);
-      int childCount = parent.getChildCount();
+      var index = model.getIndexOfChild(parent, node);
+      var childCount = parent.getChildCount();
 
       if (tester.test(index, childCount)) {
         return;
       }
 
-      int newIndex = indexProvider.apply(index);
+      var newIndex = indexProvider.apply(index);
       parent.switchNodes(index, newIndex);
 
       model.nodeStructureChanged(parent);
