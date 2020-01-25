@@ -1,5 +1,6 @@
 package kibu.kuhn.myfavorites.prefs;
 
+import java.awt.Point;
 import java.io.File;
 import java.util.Arrays;
 import java.util.Locale;
@@ -16,8 +17,12 @@ import kibu.kuhn.myfavorites.ui.drop.RootNode;
 class PreferencesService implements IPreferencesService {
 
 
+
+  private static final String MAIN_MENU_LOCATION = "mainMenuLocation";
+
   private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesService.class);
 
+  private static final String MAIN_MENU_LOCATION_UPDATE = "mainMenuLocationUpdate";
   private static final String EXPORT_PATH = "exportpath";
   static final String LOCALE = "locale";
   static final String LAF = "laf";
@@ -129,4 +134,45 @@ class PreferencesService implements IPreferencesService {
   public boolean isConfirmDeleteItem() {
     return getPreferences().getBoolean(CONFIRM_DELETE_ITEM, true);
   }
+
+
+  @Override
+  public boolean isMainMenuLocationUpdatEnabled() {
+    return getPreferences().getBoolean(MAIN_MENU_LOCATION_UPDATE, true);
+  }
+
+
+  @Override
+  public void setMainMenuLocationUpdateNabled(boolean enabled) {
+    getPreferences().putBoolean(MAIN_MENU_LOCATION_UPDATE, enabled);
+  }
+
+
+  @Override
+  public void saveMainMenuLocation(Point locationOnScreen) {
+    getPreferences().put(MAIN_MENU_LOCATION, toString(locationOnScreen));
+
+  }
+
+
+  private String toString(Point locationOnScreen) {
+    if (locationOnScreen == null) {
+      return null;
+    }
+    return locationOnScreen.x + "/" + locationOnScreen.y;
+  }
+
+
+  @Override
+  public Point getMainMenuLocation() {
+    var s = getPreferences().get(MAIN_MENU_LOCATION, null);
+    if (s == null) {
+      return null;
+    }
+
+    var split = s.split("/");
+    return new Point(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
+  }
+
+
 }

@@ -39,7 +39,7 @@ import kibu.kuhn.myfavorites.ui.xport.XPortPane;
 
 public class SettingsMenu {
 
-  private static final int HEIGHT = 450;
+  private static final int HEIGHT = 500;
   private static final int WIDTH = 400;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SettingsMenu.class);
@@ -150,8 +150,21 @@ public class SettingsMenu {
     JCheckBox chkbox = new JCheckBox(IGui.get().getI18n("settingsmenu.confirm.delete"));
     chkbox.setSelected(IPreferencesService.get().isConfirmDeleteItem());
     chkbox.addActionListener(new ConfirmDeleteItemAction());
-
     pane.add(chkbox, constraints);
+
+    constraints.insets.top = 2;
+    constraints.anchor = WEST;
+    constraints.gridx = 0;
+    constraints.gridy = RELATIVE;
+    constraints.weightx = 1;
+    constraints.weighty = 0;
+    constraints.gridwidth = REMAINDER;
+    constraints.gridheight = 1;
+    constraints.fill = NONE;
+    JCheckBox adjustLocation = new JCheckBox(IGui.get().getI18n("settingsmenu.adjust.mainmenu.location"));
+    adjustLocation.setSelected(IPreferencesService.get().isMainMenuLocationUpdatEnabled());
+    adjustLocation.addActionListener(new AdjustLocationAction());
+    pane.add(adjustLocation, constraints);
 
     constraints.insets.top = 10;
     constraints.anchor = WEST;
@@ -283,6 +296,14 @@ public class SettingsMenu {
     @Override
     public void actionPerformed(ActionEvent e) {
       IPreferencesService.get().saveConfirmDeleteItem(((JCheckBox)e.getSource()).isSelected());
+    }
+  }
+
+  private class AdjustLocationAction implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      IPreferencesService.get().setMainMenuLocationUpdateNabled(((JCheckBox)e.getSource()).isSelected());
     }
   }
 }

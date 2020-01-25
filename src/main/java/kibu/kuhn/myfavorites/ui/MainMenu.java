@@ -9,6 +9,7 @@ import static kibu.kuhn.myfavorites.domain.Type.HyperlinkItem;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Point;
 import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
@@ -17,6 +18,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.function.Consumer;
@@ -54,11 +57,11 @@ class MainMenu extends MouseAdapter {
         settingsMenu.setDialogVisible(true);
         break;
       case ButtonBar.ACTION_HELP:
-          if (helpMenu == null) {
-            helpMenu = createHelpMenu();
-          }
-          helpMenu.setDialogVisible(true);
-          break;
+        if (helpMenu == null) {
+          helpMenu = createHelpMenu();
+        }
+        helpMenu.setDialogVisible(true);
+        break;
     }
 
   };
@@ -111,14 +114,42 @@ class MainMenu extends MouseAdapter {
     pane.add(errorPane, SOUTH);
     dialog.setUndecorated(true);
     dialog.setPreferredSize(new Dimension(200, 400));
-    var trayIcon = (TrayIcon) e.getSource();
-    var locationOnScreen = e.getLocationOnScreen();
-    var size = trayIcon.getSize();
-    locationOnScreen.y = locationOnScreen.y + size.height;
-    locationOnScreen.x = locationOnScreen.x - size.width/2;
-    dialog.setLocation(locationOnScreen);
+
+    setLocationOnScreen(e, tree);
+
     dialog.pack();
     dialog.setVisible(true);
+  }
+
+  private void setLocationOnScreen(MouseEvent e, DropTree tree) {
+    var locationOnScreen = (Point)null;
+    if (System.getProperty("resetLoc") != null) {
+      IPreferencesService.get().saveMainMenuLocation(null);
+    }
+    if (IPreferencesService.get().isMainMenuLocationUpdatEnabled()) {
+      var handler = new MainMenuLocationHandler(dialog);
+      tree.addMouseMotionListener(handler);
+      tree.addKeyListener(handler);
+    }
+    else {
+      var trayIcon = (TrayIcon) e.getSource();
+      locationOnScreen = e.getLocationOnScreen();
+      var size = trayIcon.getSize();
+      if (IPreferencesService.get().getMainMenuLocation() == null) {
+        locationOnScreen.y = locationOnScreen.y + size.height;
+        locationOnScreen.x = locationOnScreen.x - size.width / 2;
+      }
+      else {
+        locationOnScreen = IPreferencesService.get().getMainMenuLocation();
+      }
+    }
+
+    if (locationOnScreen == null) {
+      dialog.setLocationRelativeTo(null);
+    }
+    else {
+      dialog.setLocation(locationOnScreen);
+    }
   }
 
   private void initDropActions(DropTree tree) {
