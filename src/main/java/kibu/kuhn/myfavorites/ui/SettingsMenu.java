@@ -161,7 +161,7 @@ public class SettingsMenu {
     constraints.gridwidth = REMAINDER;
     constraints.gridheight = 1;
     constraints.fill = NONE;
-    JCheckBox adjustLocation = new JCheckBox(IGui.get().getI18n("settingsmenu.adjust.mainmenu.location"));
+    JCheckBox adjustLocation = new XCheckBox(IGui.get().getI18n("settingsmenu.adjust.mainmenu.location"));
     adjustLocation.setSelected(IPreferencesService.get().isMainMenuLocationUpdatEnabled());
     adjustLocation.addActionListener(new AdjustLocationAction());
     pane.add(adjustLocation, constraints);
