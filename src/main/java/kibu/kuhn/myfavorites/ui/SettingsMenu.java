@@ -147,7 +147,7 @@ public class SettingsMenu {
     constraints.gridwidth = REMAINDER;
     constraints.gridheight = 1;
     constraints.fill = NONE;
-    JCheckBox chkbox = new JCheckBox(IGui.get().getI18n("settingsmenu.confirm.delete"));
+    JCheckBox chkbox = new XCheckBox(IGui.get().getI18n("settingsmenu.confirm.delete"));
     chkbox.setSelected(IPreferencesService.get().isConfirmDeleteItem());
     chkbox.addActionListener(new ConfirmDeleteItemAction());
     pane.add(chkbox, constraints);
