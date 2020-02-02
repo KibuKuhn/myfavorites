@@ -11,9 +11,9 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import kibu.kuhn.myfavorites.ui.IGui;
 import kibu.kuhn.myfavorites.ui.SettingsMenu;
+import kibu.kuhn.myfavorites.ui.XRadioButton;
 import kibu.kuhn.myfavorites.ui.drop.DropLabel;
 import kibu.kuhn.myfavorites.ui.xport.drop.ImportDropTargetHandler;
 
@@ -32,9 +32,9 @@ public class ImportPane extends JPanel {
   private void init() {
     setLayout(new BorderLayout());
     var buttonGroup = new ButtonGroup();
-    var replaceButton = new JRadioButton(new ReplaceAction());
+    var replaceButton = new XRadioButton(new ReplaceAction());
     buttonGroup.add(replaceButton);
-    var mergeButton = new JRadioButton(new MergeAction());
+    var mergeButton = new XRadioButton(new MergeAction());
     buttonGroup.add(mergeButton);
 
     var buttonPane = new JPanel(new GridLayout(2, 1));
