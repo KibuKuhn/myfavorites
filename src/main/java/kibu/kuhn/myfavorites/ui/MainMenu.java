@@ -87,9 +87,23 @@ class MainMenu extends MouseAdapter {
 
   @Override
   public void mouseClicked(MouseEvent e) {
+    if (e.getButton() == MouseEvent.BUTTON1) {
       showDialog(e);
+    }
+    else if (e.getButton() == MouseEvent.BUTTON3) {
+      showSettings();
+    }
   }
 
+
+  private void showSettings() {
+    if (settingsMenu != null) {
+      return;
+    }
+
+    SettingsMenu menu = createSettingsMenu();
+    menu.setDialogVisible(true);
+  }
 
   private void showDialog(MouseEvent e) {
     if (dialog != null) {

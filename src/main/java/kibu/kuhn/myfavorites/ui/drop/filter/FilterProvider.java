@@ -3,6 +3,7 @@ package kibu.kuhn.myfavorites.ui.drop.filter;
 import java.awt.datatransfer.DataFlavor;
 import java.util.function.Predicate;
 import kibu.kuhn.myfavorites.ui.drop.TransferData;
+import kibu.kuhn.myfavorites.util.ISystemUtils;
 
 class FilterProvider {
 
@@ -34,7 +35,14 @@ class FilterProvider {
   }
 
   private Predicate<TransferData> getFileFilter() {
-    if (fileFilter == null) {
+    if (fileFilter != null) {
+      return fileFilter;
+    }
+
+    if (ISystemUtils.get().isWindows()) {
+       fileFilter = new WindowsFileFilter();
+    }
+    else {
       fileFilter = new FileFilter();
     }
     return fileFilter;

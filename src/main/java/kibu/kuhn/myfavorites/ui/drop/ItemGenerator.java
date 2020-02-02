@@ -6,15 +6,15 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+
 import kibu.kuhn.myfavorites.domain.DesktopItem;
 import kibu.kuhn.myfavorites.domain.FileSystemItem;
 import kibu.kuhn.myfavorites.domain.HyperlinkItem;
 import kibu.kuhn.myfavorites.domain.Item;
 import kibu.kuhn.myfavorites.ui.drop.filter.FileFilter;
 
-class ItemGenerator implements Function<TransferData, List<Item>> {
+class ItemGenerator implements IITemGenerator {
 
   @SuppressWarnings("unchecked")
   @Override
@@ -43,10 +43,14 @@ class ItemGenerator implements Function<TransferData, List<Item>> {
   }
 
   private Item createItem(File f) {
-    if (f.getName().endsWith(FileFilter.DESKTOP_SUFFIX)) {
-      return DesktopItem.of(f.toPath(), true);
+    if (isDesktopFile(f)) {
+      return DesktopItem.of(f.toPath());
     }
 
     return FileSystemItem.of(f.toPath(), !f.isDirectory());
+  }
+
+  protected boolean isDesktopFile(File f) {
+    return f.getName().endsWith(FileFilter.DESKTOP_SUFFIX);
   }
 }
