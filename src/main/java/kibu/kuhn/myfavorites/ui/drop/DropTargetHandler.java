@@ -27,12 +27,13 @@ public final class DropTargetHandler extends DropTargetAdapter {
       event.acceptDrop(event.getDropAction());
       var transferable = event.getTransferable();
       var flavors = transferable.getTransferDataFlavors();
+
       //@formatter:off
       var nodes = Arrays.stream(flavors)
                         .filter(new FlavorFilter())
                         .map(new FlavorMapper(event))
                         .filter(new TransferDataFilter())
-                        .map(new ItemGenerator())
+                        .map(IITemGenerator.get())
                         .flatMap(items -> items.stream())
                         .map(ItemTreeNode::of)
                         .collect(Collectors.toList());

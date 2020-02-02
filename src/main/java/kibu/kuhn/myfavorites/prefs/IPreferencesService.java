@@ -1,5 +1,6 @@
 package kibu.kuhn.myfavorites.prefs;
 
+import java.awt.Point;
 import java.io.File;
 import java.util.Locale;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -31,4 +32,14 @@ public interface IPreferencesService {
   void saveConfirmDeleteItem(boolean selected);
 
   boolean isConfirmDeleteItem();
+
+  boolean isMainMenuLocationUpdatEnabled();
+
+  void setMainMenuLocationUpdateNabled(boolean enabled);
+
+  void saveMainMenuLocation(Point locationOnScreen);
+
+  Point getMainMenuLocation();
+
 }
+

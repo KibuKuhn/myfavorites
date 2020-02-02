@@ -27,13 +27,9 @@ public class FileFilter implements Predicate<TransferData> {
       try {
         if (file.isDirectory()) {
           return true;
-        } else if (file.getName().endsWith(DESKTOP_SUFFIX)) {
-          return analyze(file);
-        } else if (file.canExecute()) {
-          return false;
-        } else {
-          return true;
         }
+
+        return analyze(file);
       } catch (Exception ex) {
         LOGGER.error(ex.getMessage(), ex);
         return false;
@@ -41,12 +37,23 @@ public class FileFilter implements Predicate<TransferData> {
     });
   }
 
-  private boolean analyze(File file) throws IOException {
-    var map = Files.readAllLines(file.toPath()).stream().collect(new LineMapper());
-    String value = map.get(KEY_TYPE);
-    if (!TYPE_LINK.equals(value)) {
+
+  protected boolean isExecutable(File file) {
+    return file.canExecute();
+  }
+
+  protected boolean analyze(File file) throws IOException {
+    if (file.getName().endsWith(DESKTOP_SUFFIX)) {
+      var map = Files.readAllLines(file.toPath()).stream().collect(new LineMapper());
+      var value = map.get(KEY_TYPE);
+      if (!TYPE_LINK.equals(value)) {
+        return false;
+      }
+    }
+    else if (isExecutable(file)) {
       return false;
     }
+
     return true;
   }
 

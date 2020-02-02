@@ -9,7 +9,6 @@ import static kibu.kuhn.myfavorites.domain.Type.HyperlinkItem;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -54,16 +53,17 @@ class MainMenu extends MouseAdapter {
         settingsMenu.setDialogVisible(true);
         break;
       case ButtonBar.ACTION_HELP:
-          if (helpMenu == null) {
-            helpMenu = createHelpMenu();
-          }
-          helpMenu.setDialogVisible(true);
-          break;
+        if (helpMenu == null) {
+          helpMenu = createHelpMenu();
+        }
+        helpMenu.setDialogVisible(true);
+        break;
     }
 
   };
 
   private JTextArea errorPane;
+  private MainMenuLocationHandler mainMenuLocationHandler;
 
   MainMenu() {}
 
@@ -87,9 +87,23 @@ class MainMenu extends MouseAdapter {
 
   @Override
   public void mouseClicked(MouseEvent e) {
-    showDialog(e);
+    if (e.getButton() == MouseEvent.BUTTON1) {
+      showDialog(e);
+    }
+    else if (e.getButton() == MouseEvent.BUTTON3) {
+      showSettings();
+    }
   }
 
+
+  private void showSettings() {
+    if (settingsMenu != null) {
+      return;
+    }
+
+    SettingsMenu menu = createSettingsMenu();
+    menu.setDialogVisible(true);
+  }
 
   private void showDialog(MouseEvent e) {
     if (dialog != null) {
@@ -111,12 +125,10 @@ class MainMenu extends MouseAdapter {
     pane.add(errorPane, SOUTH);
     dialog.setUndecorated(true);
     dialog.setPreferredSize(new Dimension(200, 400));
-    var trayIcon = (TrayIcon) e.getSource();
-    var locationOnScreen = e.getLocationOnScreen();
-    var size = trayIcon.getSize();
-    locationOnScreen.y = locationOnScreen.y + size.height;
-    locationOnScreen.x = locationOnScreen.x - size.width/2;
-    dialog.setLocation(locationOnScreen);
+
+    mainMenuLocationHandler = new MainMenuLocationHandler(e, dialog, tree);
+    mainMenuLocationHandler.initLocation();
+
     dialog.pack();
     dialog.setVisible(true);
   }
@@ -140,6 +152,9 @@ class MainMenu extends MouseAdapter {
   }
 
   private void closeDialog() {
+    if (IPreferencesService.get().isMainMenuLocationUpdatEnabled()) {
+      mainMenuLocationHandler.saveLocation();
+    }
     if (dialog == null) {
       return;
     }
