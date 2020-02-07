@@ -3,7 +3,6 @@ package kibu.kuhn.myfavorites.ui;
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.NORTH;
 import static java.awt.BorderLayout.SOUTH;
-import static kibu.kuhn.myfavorites.domain.Type.DesktopItem;
 import static kibu.kuhn.myfavorites.domain.Type.FileSystemItem;
 import static kibu.kuhn.myfavorites.domain.Type.HyperlinkItem;
 import java.awt.BorderLayout;
@@ -197,7 +196,7 @@ class MainMenu extends MouseAdapter {
 
       var node = (DropTreeNode) selectionPath.getLastPathComponent();
       var type = node.getItem().getType();
-      if (!(type == DesktopItem || type == FileSystemItem || type == HyperlinkItem)) {
+      if (!(type == FileSystemItem || type == HyperlinkItem)) {
         return;
       }
 

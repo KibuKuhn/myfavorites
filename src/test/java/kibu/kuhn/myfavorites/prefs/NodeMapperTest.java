@@ -9,7 +9,6 @@ import java.util.Iterator;
 import javax.swing.tree.TreeNode;
 import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import kibu.kuhn.myfavorites.domain.DesktopItem;
 import kibu.kuhn.myfavorites.domain.FileSystemItem;
 import kibu.kuhn.myfavorites.domain.HyperlinkItem;
 import kibu.kuhn.myfavorites.ui.drop.BoxNode;
@@ -53,12 +52,6 @@ public class NodeMapperTest {
     FileSystemItem fileSystemItem = FileSystemItem.of(Paths.get(getClass().getResource("/mapperTestFile.txt").toURI()), true);
     fileSystemItem.setAlias("falias");
     child.setItem(fileSystemItem);
-    rootNode.add(child);
-
-    child = new ItemTreeNode();
-    DesktopItem desktopItem = DesktopItem.of(Paths.get(getClass().getResource("/OpenItemHandlerTest.desktop").toURI()));
-    desktopItem.setAlias("dalias");
-    child.setItem(desktopItem);
     rootNode.add(child);
 
     BoxNode boxNode = new BoxNode();
