@@ -48,7 +48,6 @@ class ExportMapper
         var boxNode = new BoxNode((BoxItem)node.getItem());
         root.add(boxNode);
         break;
-      case DesktopItem:
       case FileSystemItem:
       case HyperlinkItem:
         var parent = node.getParent().isRoot() ? root : getParentForNode(root, (ItemTreeNode)node);

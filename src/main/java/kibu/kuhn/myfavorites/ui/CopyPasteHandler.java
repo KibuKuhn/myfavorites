@@ -18,7 +18,6 @@ class CopyPasteHandler {
 
   private static Set<Type> copySupport = new HashSet<>();
   static {
-    copySupport.add(Type.DesktopItem);
     copySupport.add(Type.FileSystemItem);
     copySupport.add(Type.HyperlinkItem);
   }

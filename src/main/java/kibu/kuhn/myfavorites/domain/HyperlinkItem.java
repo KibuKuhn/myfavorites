@@ -1,9 +1,14 @@
 package kibu.kuhn.myfavorites.domain;
 
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 import javax.swing.Icon;
 import kibu.kuhn.myfavorites.ui.Icons;
+import kibu.kuhn.myfavorites.ui.drop.LineMapper;
+import kibu.kuhn.myfavorites.ui.drop.filter.FileFilter;
 
 public class HyperlinkItem implements CloneableItem, Cloneable {
 
@@ -65,5 +70,16 @@ public class HyperlinkItem implements CloneableItem, Cloneable {
 
   public URL getURL() {
     return link;
+  }
+
+  public static HyperlinkItem of(Path path) {
+    var item = new HyperlinkItem();
+    try {
+      var map = Files.readAllLines(path).stream().collect(new LineMapper());
+      item.link = new URL(map.get(FileFilter.KEY_URL));
+      return item;
+    } catch (Exception e) {
+      throw new IllegalStateException(e);
+    }
   }
 }

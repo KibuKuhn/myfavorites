@@ -14,7 +14,7 @@ You can start myfavorites with -Ddelay=&lt;your-delay-in-millis&gt;. Try 5000 mi
 * Currently myfavoriites expects the system tray on top of the screen.
 
 # Prebuilt version
-If you just want to use it, download archive file from the prebuilt folder. The archive contains a customized java 11 runtime as well.
+Folder prebuilt contains 'myfavorites', a Linux runnable built with GraalVM.
 
 
 System tray

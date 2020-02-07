@@ -5,7 +5,6 @@ import java.nio.file.Path;
 import java.util.Objects;
 import javax.swing.Icon;
 import kibu.kuhn.myfavorites.ui.Icons;
-import kibu.kuhn.myfavorites.ui.drop.filter.FileFilter;
 
 
 public class FileSystemItem implements CloneableItem, Cloneable {
@@ -15,10 +14,6 @@ public class FileSystemItem implements CloneableItem, Cloneable {
   private String alias;
 
   public static FileSystemItem of(Path path, boolean file) {
-    if (path.toString().endsWith(FileFilter.DESKTOP_SUFFIX)) {
-      return  DesktopItem.of(path);
-    }
-
     var item = new FileSystemItem();
     item.path = path;
     item.file = file;

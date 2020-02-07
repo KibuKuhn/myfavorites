@@ -7,8 +7,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import kibu.kuhn.myfavorites.domain.DesktopItem;
 import kibu.kuhn.myfavorites.domain.FileSystemItem;
 import kibu.kuhn.myfavorites.domain.HyperlinkItem;
 import kibu.kuhn.myfavorites.domain.Item;
@@ -44,7 +42,7 @@ class ItemGenerator implements IITemGenerator {
 
   private Item createItem(File f) {
     if (isDesktopFile(f)) {
-      return DesktopItem.of(f.toPath());
+      return HyperlinkItem.of(f.toPath());
     }
 
     return FileSystemItem.of(f.toPath(), !f.isDirectory());
