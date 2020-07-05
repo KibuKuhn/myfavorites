@@ -13,9 +13,6 @@ This is because the system tray is not yet up to support Java. See error log.
 You can start myfavorites with -Ddelay=&lt;your-delay-in-millis&gt;. Try 5000 millis if you get this problem.
 * Currently myfavoriites expects the system tray on top of the screen.
 
-# Prebuilt version
-Folder prebuilt contains 'myfavorites', a Linux runnable built with GraalVM.
-
 
 System tray
 
