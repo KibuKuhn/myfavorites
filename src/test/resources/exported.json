@@ -1,0 +1,37 @@
+{
+	"type": "Root",
+	"children": [
+		{
+			"type": "FileSystemItem",
+			"path": "/home/user/desktop/myFolder",
+			"children": [],
+			"file": false
+		},
+		{
+			"type": "FileSystemItem",
+			"path": "/home/user/desktop/myDoc1.txt",
+			"children": [],
+			"file": true
+		},
+		{
+			"type": "BoxItem",
+			"alias": "myBox1",
+			"children": [],
+			"file": false
+		},
+		{
+			"type": "BoxItem",
+			"alias": "myBox2",
+			"children": [
+				{
+					"type": "FileSystemItem",
+					"path": "/home/user/desktop/myDoc2.txt",
+					"children": [],
+					"file": true
+				}
+			],
+			"file": false
+		}
+	],
+	"file": false
+}

@@ -16,6 +16,7 @@ public class MyFavorites {
   static {
     initLogging();
   }
+  
   private static final Logger LOGGER = LoggerFactory.getLogger(MyFavorites.class);
 
   public static void main(String[] args) throws IOException {

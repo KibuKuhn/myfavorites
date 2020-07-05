@@ -17,7 +17,7 @@ class Exporter {
   Exporter(ExportPane pane) {
     this.exportPane = pane;
   }
-
+  
   void exportFavorites(File file) throws IOException {
     //@formatter:off
     var root = Arrays.stream(exportPane.getTree().getSelectionPaths())
@@ -26,9 +26,13 @@ class Exporter {
                           .collect(new ExportMapper());
     var nodeMapper = new NodeMapper();
     var json = nodeMapper.mapToJson(root);
+    toFile(file, json);
+    //@formatter:on
+  }
+
+  void toFile(File file, String json) throws IOException {
     Files.writeString(file.toPath(), json, StandardCharsets.UTF_8, StandardOpenOption.CREATE);
     exportPane.getSettingsMenu().showMessage(String.format(IGui.get().getI18n("exporter.success"), file.getAbsolutePath()));
-    //@formatter:on
   }
 
 }
