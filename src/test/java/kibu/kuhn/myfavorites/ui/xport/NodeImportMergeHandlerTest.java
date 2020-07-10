@@ -1,5 +1,7 @@
 package kibu.kuhn.myfavorites.ui.xport;
 
+import static kibu.kuhn.myfavorites.ui.xport.TestDataProvider.createMergeNode;
+import static kibu.kuhn.myfavorites.ui.xport.TestDataProvider.createTestNode;
 import static org.assertj.core.api.Assertions.assertThat;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
@@ -75,64 +77,6 @@ public class NodeImportMergeHandlerTest {
     child0 = (DropTreeNode)children.get(0);
     assertThat(child0.getItem().getType()).isEqualTo(Type.FileSystemItem);
     assertThat(child0.getItem().getAlias()).isEqualTo("item3Merge");
-  }
-
-  /**
-   *  ----------Root------------
-   *   |         |        |
-   *  item1     box1     item3
-   *             |
-   *           item2
-   */
-  static RootNode createTestNode() throws URISyntaxException {
-    RootNode rootNode = new RootNode();
-    FileSystemItem item1 = FileSystemItem.of(Paths.get(NodeImportMergeHandlerTest.class.getResource("/mapperTestFile.txt").toURI()), true);
-    item1.setAlias("item1");
-    FileSystemItem item2 = FileSystemItem.of(Paths.get(NodeImportMergeHandlerTest.class.getResource("/mapperTestFile.txt").toURI()), true);
-    item2.setAlias("item2");
-    FileSystemItem item3 = FileSystemItem.of(Paths.get(NodeImportMergeHandlerTest.class.getResource("/mapperTestFile.txt").toURI()), true);
-    item3.setAlias("item3");
-
-    BoxNode boxNode = new BoxNode();
-    boxNode.getItem().setAlias("box1");
-    boxNode.add(ItemTreeNode.of(item2));
-
-    rootNode.add(ItemTreeNode.of(item1));
-    rootNode.add(boxNode);
-    rootNode.add(ItemTreeNode.of(item3));
-
-    return rootNode;
-  }
-
-  /**
-   *  ----------Root------------
-   *   |         |            |
-   *  box1   item1Merge   boxMerge
-   *   |                      |
-   * item2Merge           item3Merge
-   */
-  private RootNode createMergeNode() throws URISyntaxException {
-    RootNode rootNode = new RootNode();
-    FileSystemItem item1 = FileSystemItem.of(Paths.get(getClass().getResource("/mapperTestFile.txt").toURI()), true);
-    item1.setAlias("item1Merge");
-    FileSystemItem item2 = FileSystemItem.of(Paths.get(getClass().getResource("/mapperTestFile.txt").toURI()), true);
-    item2.setAlias("item2Merge");
-    FileSystemItem item3 = FileSystemItem.of(Paths.get(getClass().getResource("/mapperTestFile.txt").toURI()), true);
-    item3.setAlias("item3Merge");
-
-    BoxNode boxNode = new BoxNode();
-    boxNode.getItem().setAlias("box1");
-    boxNode.add(ItemTreeNode.of(item2));
-
-    BoxNode boxNode2 = new BoxNode();
-    boxNode2.getItem().setAlias("boxMerge");
-    boxNode2.add(ItemTreeNode.of(item3));
-
-    rootNode.add(boxNode);
-    rootNode.add(ItemTreeNode.of(item1));
-    rootNode.add(boxNode2);
-
-    return rootNode;
   }
 
 }

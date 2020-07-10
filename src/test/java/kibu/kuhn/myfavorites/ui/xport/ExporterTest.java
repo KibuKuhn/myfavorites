@@ -1,10 +1,13 @@
 package kibu.kuhn.myfavorites.ui.xport;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static kibu.kuhn.myfavorites.ui.xport.TestDataProvider.createTestNode;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.swing.tree.TreePath;
@@ -37,54 +40,45 @@ public class ExporterTest {
   @Captor
   private ArgumentCaptor<String> jsonCaptor;
   
-  private TreePath[] selectionPaths;
-  private RootNode root;
-  
   
   @BeforeEach
   public void init() throws IOException {
-    createTestData();
     when(pane.getTree()).thenReturn(tree);
-    when(tree.getSelectionPaths()).thenReturn(selectionPaths);
     doNothing().when(exporter).toFile(any(), jsonCaptor.capture());
   }
   
   @Test
   public void testExport() throws Exception {
+    TreePath[] selectionPaths = createTestData();
+    when(tree.getSelectionPaths()).thenReturn(selectionPaths);
     exporter.exportFavorites(null);
     var json = jsonCaptor.getValue();
-    var expectedJson = Files.readString(Paths.get(getClass().getResource("/exported.json").toURI()), java.nio.charset.StandardCharsets.UTF_8);
+    var expectedJson = Files.readString(Paths.get(getClass().getResource("/testExport.json").toURI()), UTF_8);
     assertEquals(expectedJson, json, true);
   }
   
-  
-  private void createTestData() {
-    selectionPaths = new TreePath[4];
-    root = new RootNode();
-    var item = FileSystemItem.of(Paths.get("/home/user/desktop/myFolder"), false);
-    var node = ItemTreeNode.of(item);
-    selectionPaths[0] = new TreePath(new Object[] {root, node});
-    root.add(node);
+  private TreePath[] createTestData() {
+    RootNode root = createTestNode();
+    TreePath[] selectedPaths = new TreePath[3];
+    TreePath treePath = new TreePath(new Object[] {
+      root,
+      root.getChildAt(0),
+    });
+    selectedPaths[0] = treePath;
     
-    item = FileSystemItem.of(Paths.get("/home/user/desktop/myDoc1.txt"), true);
-    node = ItemTreeNode.of(item);
-    selectionPaths[1] = new TreePath(new Object[] {root, node});
-    root.add(node);
+    treePath = new TreePath(new Object[] {
+        root,
+        root.getChildAt(1),
+        root.getChildAt(1).getChildAt(0)
+      });
+    selectedPaths[1] = treePath;
     
-    var box = new BoxItem();
-    box.setAlias("myBox1");
-    var bn = new BoxNode(box);
-    selectionPaths[2] = new TreePath(new Object[] {root, bn});
-    root.add(bn);
+    treePath = new TreePath(new Object[] {
+        root,
+        root.getChildAt(2)
+      });
+    selectedPaths[2] = treePath;
     
-    box = new BoxItem();
-    box.setAlias("myBox2");
-    bn = new BoxNode(box);
-    item = FileSystemItem.of(Paths.get("/home/user/desktop/myDoc2.txt"), true);
-    node = ItemTreeNode.of(item);
-    bn.add(node);
-    root.add(bn);
-    selectionPaths[3] = new TreePath(new Object[] {root, bn, node});
+    return selectedPaths;
   }
-
 }
