@@ -1,0 +1,48 @@
+{
+  "children": [
+    {
+      "alias": "item1", 
+      "children": [], 
+      "file": true, 
+      "path": "myfavorites/mapperTestFile.txt", 
+      "type": "FileSystemItem"
+    }, 
+    {
+      "alias": "box1", 
+      "children": [
+        {
+          "alias": "item2", 
+          "children": [], 
+          "file": true, 
+          "path": "myfavorites/mapperTestFile.txt", 
+          "type": "FileSystemItem"
+        }, 
+        {
+          "alias": "item4", 
+          "children": [], 
+          "file": true, 
+          "path": "myfavorites/mapperTestFile.txt", 
+          "type": "FileSystemItem"
+        }
+      ], 
+      "file": false, 
+      "type": "BoxItem"
+    }, 
+    {
+      "alias": "item3", 
+      "children": [], 
+      "file": true, 
+      "path": "myfavorites/mapperTestFile.txt", 
+      "type": "FileSystemItem"
+    }, 
+    {
+      "alias": "box2", 
+      "children": [], 
+      "file": false, 
+      "type": "BoxItem"
+    }
+  ], 
+  "file": false, 
+  "type": "Root"
+}
+

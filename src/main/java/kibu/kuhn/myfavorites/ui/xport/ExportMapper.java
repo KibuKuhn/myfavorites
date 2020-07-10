@@ -7,6 +7,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import javax.swing.tree.TreeNode;
 import kibu.kuhn.myfavorites.domain.BoxItem;
 import kibu.kuhn.myfavorites.ui.drop.BoxNode;
 import kibu.kuhn.myfavorites.ui.drop.DropTreeNode;
@@ -45,7 +46,7 @@ class ExportMapper
   public void accept(RootNode root, DropTreeNode node) {
     switch (node.getItem().getType()) {
       case BoxItem:
-        var boxNode = new BoxNode((BoxItem)node.getItem());
+        var boxNode = findBoxNode((BoxItem)node.getItem(), root);
         root.add(boxNode);
         break;
       case FileSystemItem:
@@ -62,6 +63,16 @@ class ExportMapper
 
   }
 
+  private BoxNode findBoxNode(BoxItem item, RootNode root) {
+    for (TreeNode child : root.getChildren()) {
+      if (((DropTreeNode)child).getItem().equals(item)) {
+        return (BoxNode)child;
+      }
+    }
+    
+    return new BoxNode(item);
+  }
+
   private DropTreeNode getParentForNode(RootNode root, ItemTreeNode node) {
     var parent = node.getParent();
     if (parent == null) {
@@ -71,18 +82,10 @@ class ExportMapper
     switch (parent.getItem().getType()) {
       case BoxItem:
         //@formatter:off
-        var newParent =
-                 (BoxNode) root.getChildren()
-                               .stream()
-                               .filter(ch -> ch instanceof BoxNode && (ch == node))
-                               .reduce((n1,n2) -> {
-                                 throw new IllegalStateException(String.format("More than 1 BoxNode found with alias '%s'", node.getItem().getAlias()));
-                               })
-                               .orElseGet(() -> {
-                                 var bn = new BoxNode((BoxItem)parent.getItem());
-                                 root.add(bn);
-                                 return bn;
-                               });
+        var newParent = findBoxNode((BoxItem)parent.getItem(), root);
+        if (newParent.getParent() == null) {
+          root.add(newParent);
+        }
         return newParent;
         //@formatter:on
       case Root:

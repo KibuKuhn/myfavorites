@@ -1,0 +1,34 @@
+{
+	"type": "Root",
+	"children": [
+		{
+			"type": "FileSystemItem",
+			"alias": "item1",
+			"path": "myfavorites/mapperTestFile.txt",
+			"children": [],
+			"file": true
+		},
+		{
+			"type": "BoxItem",
+			"alias": "box1",
+			"children": [
+				{
+					"type": "FileSystemItem",
+					"alias": "item2",
+					"path": "myfavorites/mapperTestFile.txt",
+					"children": [],
+					"file": true
+				}
+			],
+			"file": false
+		},
+		{
+			"type": "FileSystemItem",
+			"alias": "item3",
+			"path": "myfavorites/mapperTestFile.txt",
+			"children": [],
+			"file": true
+		}
+	],
+	"file": false
+}

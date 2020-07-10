@@ -7,8 +7,8 @@ class NodeImportReplaceHandler implements NodeImportHandler {
 
   @Override
   public void accept(RootNode node) {
-    DropTreeModel.instance().setRoot(node);
-    save(node);
+    DropTreeModel.instance().getRoot().removeAllChildren();
+    new NodeImportMergeHandler().accept(node);
   }
 
 }
