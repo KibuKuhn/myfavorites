@@ -9,14 +9,18 @@ import kibu.kuhn.myfavorites.ui.drop.RootNode;
 
 public interface IPreferencesService {
 
+  @SuppressWarnings("exports")
   void saveItems(RootNode node);
 
+  @SuppressWarnings("exports")
   RootNode getItems();
 
+  @SuppressWarnings("exports")
   void saveLaf(LookAndFeelInfo laf);
 
   void saveLocale(Locale locale);
 
+  @SuppressWarnings("exports")
   LookAndFeelInfo getLaf();
 
   Locale getLocale();
@@ -37,8 +41,10 @@ public interface IPreferencesService {
 
   void setMainMenuLocationUpdateNabled(boolean enabled);
 
+  @SuppressWarnings("exports")
   void saveMainMenuLocation(Point locationOnScreen);
 
+  @SuppressWarnings("exports")
   Point getMainMenuLocation();
 
 }

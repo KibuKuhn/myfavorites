@@ -14,6 +14,7 @@ import kibu.kuhn.myfavorites.ui.drop.RootNode;
 
 public class NodeMapper {
 
+  @SuppressWarnings("exports")
   public String mapToJson(DropTreeNode node) throws JsonProcessingException {
     var jsonNode = mapNode(node, null);
     return new ObjectMapper().writeValueAsString(jsonNode);
@@ -50,6 +51,7 @@ public class NodeMapper {
     return jsonNode;
   }
 
+  @SuppressWarnings("exports")
   public DropTreeNode mapToNode(String json) throws JsonProcessingException  {
     var node = new ObjectMapper().readValue(json, JsonTreeNode.class);
     return mapNode(node, null);

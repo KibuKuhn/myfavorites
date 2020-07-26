@@ -17,6 +17,7 @@ public class TestDataProvider {
    *            |  |
    *        item2  item4
    */
+  @SuppressWarnings("exports")
   public static RootNode createTestNode() {
     try {
       RootNode rootNode = new RootNode();
@@ -57,6 +58,7 @@ public class TestDataProvider {
    *   |                      |
    * item2Merge           item3Merge
    */
+  @SuppressWarnings("exports")
   public static RootNode createMergeNode() throws URISyntaxException {
     RootNode rootNode = new RootNode();
     FileSystemItem item1 = FileSystemItem.of(Paths.get(TestDataProvider.class.getResource("/mapperTestFile.txt").toURI()), true);
@@ -89,6 +91,7 @@ public class TestDataProvider {
    *        item2
    * @return
    */
+  @SuppressWarnings("exports")
   public static TreePath[] createTestSelections() {
     RootNode root = createTestNode();
     TreePath[] selectedPaths = new TreePath[3];
@@ -122,6 +125,7 @@ public class TestDataProvider {
    *        item2              item4
    * @return
    */
+  @SuppressWarnings("exports")
   public static TreePath[] createTestSelections2() {
     RootNode root = createTestNode();
     TreePath[] selectedPaths = new TreePath[4];

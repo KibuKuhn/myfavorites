@@ -21,10 +21,12 @@ public class JsonTreeNode {
   private List<JsonTreeNode> children = new ArrayList<>();
   private boolean file;
 
+  @SuppressWarnings("exports")
   public Type getType() {
     return type;
   }
 
+  @SuppressWarnings("exports")
   public void setType(Type type) {
     this.type = type;
   }
