@@ -3,16 +3,10 @@ package kibu.kuhn.myfavorites.ui;
 import static java.awt.BorderLayout.CENTER;
 import static java.awt.BorderLayout.NORTH;
 import static java.awt.BorderLayout.SOUTH;
-import static kibu.kuhn.myfavorites.domain.Type.FileSystemItem;
-import static kibu.kuhn.myfavorites.domain.Type.HyperlinkItem;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -24,7 +18,6 @@ import javax.swing.JTextArea;
 import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.buttonbar.ButtonBar;
 import kibu.kuhn.myfavorites.ui.drop.DropTree;
-import kibu.kuhn.myfavorites.ui.drop.DropTreeNode;
 
 class MainMenu extends MouseAdapter {
 
@@ -32,7 +25,7 @@ class MainMenu extends MouseAdapter {
   private ConfigMenu configMenu;
   private SettingsMenu settingsMenu;
   private HelpMenu helpMenu;
-  private OpenItemHandler openItemHandler = new OpenItemHandler(this);
+  OpenItemHandler openItemHandler = new OpenItemHandler(this);
 
   private Consumer<? super ActionEvent> buttonbarAction = ae -> {
     switch (ae.getActionCommand()) {
@@ -133,7 +126,7 @@ class MainMenu extends MouseAdapter {
   }
 
   private void initDropActions(DropTree tree) {
-    var openItem = new DropListActions();
+    var openItem = new DropListActions(this);
     tree.addKeyListener(openItem);
     tree.addMouseListener(openItem);
     tree.addFocusListener(openItem);
@@ -174,64 +167,6 @@ class MainMenu extends MouseAdapter {
     public void windowLostFocus(WindowEvent e) {
       closeDialog();
     }
-  }
-
-  private class DropListActions extends MouseAdapter implements KeyListener, FocusListener {
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-      if (e.getClickCount() != 2) {
-        return;
-      }
-      var tree = (DropTree) e.getSource();
-      openItem(tree);
-    }
-
-    private void openItem(DropTree tree) {
-      var selectionPath = tree.getSelectionPath();
-      if (selectionPath == null) {
-        return;
-      }
-
-      var node = (DropTreeNode) selectionPath.getLastPathComponent();
-      var type = node.getItem().getType();
-      if (!(type == FileSystemItem || type == HyperlinkItem)) {
-        return;
-      }
-
-      openItemHandler.openItem(node.getItem());
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-      if (e.getKeyChar() != KeyEvent.VK_ENTER) {
-        return;
-      }
-
-      var tree = (DropTree) e.getSource();
-      openItem(tree);
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {}
-
-    @Override
-    public void keyReleased(KeyEvent e) {}
-
-    @Override
-    public void focusGained(FocusEvent e) {
-      var tree = (DropTree) e.getSource();
-      if (tree.getSelectionPath() != null) {
-        return;
-      }
-
-      tree.setSelectionRow(0);
-    }
-
-    @Override
-    public void focusLost(FocusEvent e) {}
-
   }
 
   void setErrorText(String text) {
