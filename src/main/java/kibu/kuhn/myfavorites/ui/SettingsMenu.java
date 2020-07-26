@@ -151,7 +151,7 @@ public class SettingsMenu {
     constraints.gridheight = 1;
     constraints.fill = NONE;
     JCheckBox darkMode = new XCheckBox(IGui.get().getI18n("settingsmenu.darkmode"));
-    darkMode.setSelected(IPreferencesService.get().isConfirmDeleteItem());
+    darkMode.setSelected(IPreferencesService.get().isDarkMode());
     darkMode.addActionListener(new DarkModeAction());
     pane.add(darkMode, constraints);
     
