@@ -16,12 +16,9 @@ import kibu.kuhn.myfavorites.ui.drop.RootNode;
 
 class PreferencesService implements IPreferencesService {
 
-
-
+  private static final String DARK_MODE = "darkMode";
   private static final String MAIN_MENU_LOCATION = "mainMenuLocation";
-
   private static final Logger LOGGER = LoggerFactory.getLogger(PreferencesService.class);
-
   private static final String MAIN_MENU_LOCATION_UPDATE = "mainMenuLocationUpdate";
   private static final String EXPORT_PATH = "exportpath";
   static final String LOCALE = "locale";
@@ -175,4 +172,14 @@ class PreferencesService implements IPreferencesService {
   }
 
 
+  @Override
+  public void setDarkMode(boolean selected) {
+    getPreferences().putBoolean(DARK_MODE, selected); 
+  }
+
+
+  @Override
+  public boolean isDarkMode() {
+    return getPreferences().getBoolean(DARK_MODE, false);
+  }
 }

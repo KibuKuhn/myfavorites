@@ -86,6 +86,7 @@ public class SettingsMenu {
       };
     });
 
+    //l&f
     dialog.setIconImage(Icons.getImage("list36_filled"));
     var pane = dialog.getContentPane();
     pane.setLayout(new GridBagLayout());
@@ -113,7 +114,8 @@ public class SettingsMenu {
     lafs.setModel(createLafModel());
     lafs.addActionListener(new LafAction());
     pane.add(lafs, constraints);
-
+    
+    //locale
     constraints.insets.right = 10;
     constraints.anchor = WEST;
     constraints.gridx = 0;
@@ -137,7 +139,8 @@ public class SettingsMenu {
     messageAction = new LocaleAction();
     locales.addActionListener(messageAction);
     pane.add(locales, constraints);
-
+    
+    //dark mode
     constraints.insets.top = 2;
     constraints.anchor = WEST;
     constraints.gridx = 0;
@@ -147,11 +150,27 @@ public class SettingsMenu {
     constraints.gridwidth = REMAINDER;
     constraints.gridheight = 1;
     constraints.fill = NONE;
-    JCheckBox chkbox = new XCheckBox(IGui.get().getI18n("settingsmenu.confirm.delete"));
-    chkbox.setSelected(IPreferencesService.get().isConfirmDeleteItem());
-    chkbox.addActionListener(new ConfirmDeleteItemAction());
-    pane.add(chkbox, constraints);
+    JCheckBox darkMode = new XCheckBox(IGui.get().getI18n("settingsmenu.darkmode"));
+    darkMode.setSelected(IPreferencesService.get().isConfirmDeleteItem());
+    darkMode.addActionListener(new DarkModeAction());
+    pane.add(darkMode, constraints);
+    
+    //delete
+    constraints.insets.top = 2;
+    constraints.anchor = WEST;
+    constraints.gridx = 0;
+    constraints.gridy = RELATIVE;
+    constraints.weightx = 1;
+    constraints.weighty = 0;
+    constraints.gridwidth = REMAINDER;
+    constraints.gridheight = 1;
+    constraints.fill = NONE;
+    JCheckBox delete = new XCheckBox(IGui.get().getI18n("settingsmenu.confirm.delete"));
+    delete.setSelected(IPreferencesService.get().isConfirmDeleteItem());
+    delete.addActionListener(new ConfirmDeleteItemAction());
+    pane.add(delete, constraints);
 
+    //adjust
     constraints.insets.top = 2;
     constraints.anchor = WEST;
     constraints.gridx = 0;
@@ -166,6 +185,7 @@ public class SettingsMenu {
     adjustLocation.addActionListener(new AdjustLocationAction());
     pane.add(adjustLocation, constraints);
 
+    //xport
     constraints.insets.top = 10;
     constraints.anchor = WEST;
     constraints.gridx = 0;
@@ -306,4 +326,14 @@ public class SettingsMenu {
       IPreferencesService.get().setMainMenuLocationUpdateNabled(((JCheckBox)e.getSource()).isSelected());
     }
   }
+  
+  private class DarkModeAction implements ActionListener {
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+      IPreferencesService.get().setDarkMode(((JCheckBox)e.getSource()).isSelected());
+    }
+  }
+  
+  
 }

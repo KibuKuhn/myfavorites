@@ -47,5 +47,9 @@ public interface IPreferencesService {
   @SuppressWarnings("exports")
   Point getMainMenuLocation();
 
+  void setDarkMode(boolean selected);
+
+  boolean isDarkMode();
+
 }
 

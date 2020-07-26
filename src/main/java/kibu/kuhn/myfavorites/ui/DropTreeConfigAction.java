@@ -91,13 +91,17 @@ public class DropTreeConfigAction extends KeyAdapter {
     var answer = YES_OPTION;
     if (IPreferencesService.get().isConfirmDeleteItem()) {
     //@formatter:off
-      answer = JOptionPane.showConfirmDialog(
+      answer = JOptionPane.showOptionDialog(
                                   (Component)e.getSource(),
                                   IGui.get().getI18n("droptreeconfigaction.question.delete.message"),
-                                  IGui.get().getI18n("droptreeconfigaction.question.delete.title"),
+                                  IGui.get().getI18n("droptreeconfigaction.question.delete.title"),                                  
                                   YES_NO_OPTION,
                                   QUESTION_MESSAGE,
-                                  Icons.getIcon("dead32"));
+                                  Icons.getIcon("help36"),
+                                  new Object[]{
+                                      IGui.get().getI18n("droptreeconfigaction.delete.yes"),
+                                      IGui.get().getI18n("droptreeconfigaction.delete.no")},
+                                  IGui.get().getI18n("droptreeconfigaction.delete.no"));
     }
 
     //@formatter:on
