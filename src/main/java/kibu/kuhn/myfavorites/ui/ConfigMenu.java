@@ -53,7 +53,7 @@ class ConfigMenu {
     dialog.getContentPane().add(dropLabel, NORTH);
     dropTree = new DropTree();
     dialog.getContentPane().add(new JScrollPane(dropTree), CENTER);
-    DropTreeConfigAction action = new DropTreeConfigAction();
+    DropTreeConfigActions action = new DropTreeConfigActions();
     dropTree.addKeyListener(action);
     initDrop(dropLabel);
     dialog.pack();

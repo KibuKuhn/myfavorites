@@ -23,7 +23,7 @@ import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.drop.DropTree;
 import kibu.kuhn.myfavorites.ui.drop.DropTreeNode;
 
-public class DropTreeConfigAction extends KeyAdapter {
+public class DropTreeConfigActions extends KeyAdapter {
 
   public static boolean isCtrlUpDownKey(KeyEvent e) {
     return (e.getModifiersEx() == KeyEvent.CTRL_DOWN_MASK)
@@ -93,15 +93,15 @@ public class DropTreeConfigAction extends KeyAdapter {
     //@formatter:off
       answer = JOptionPane.showOptionDialog(
                                   (Component)e.getSource(),
-                                  IGui.get().getI18n("droptreeconfigaction.question.delete.message"),
-                                  IGui.get().getI18n("droptreeconfigaction.question.delete.title"),                                  
+                                  IGui.get().getI18n("droptreeconfigactions.question.delete.message"),
+                                  IGui.get().getI18n("droptreeconfigactions.question.delete.title"),                                  
                                   YES_NO_OPTION,
                                   QUESTION_MESSAGE,
                                   Icons.getIcon("help36"),
                                   new Object[]{
-                                      IGui.get().getI18n("droptreeconfigaction.delete.yes"),
-                                      IGui.get().getI18n("droptreeconfigaction.delete.no")},
-                                  IGui.get().getI18n("droptreeconfigaction.delete.no"));
+                                      IGui.get().getI18n("droptreeconfigactions.delete.yes"),
+                                      IGui.get().getI18n("droptreeconfigactions.delete.no")},
+                                  IGui.get().getI18n("droptreeconfigactions.delete.no"));
     }
 
     //@formatter:on
@@ -123,7 +123,7 @@ public class DropTreeConfigAction extends KeyAdapter {
 
     @Override
     public void accept(KeyEvent e) {
-      if (!DropTreeConfigAction.isCtrlUpDownKey(e)) {
+      if (!DropTreeConfigActions.isCtrlUpDownKey(e)) {
         return;
       }
 

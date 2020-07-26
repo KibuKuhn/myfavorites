@@ -7,7 +7,7 @@ import javax.swing.JTree;
 import javax.swing.ToolTipManager;
 import javax.swing.tree.DefaultTreeSelectionModel;
 import javax.swing.tree.TreeModel;
-import kibu.kuhn.myfavorites.ui.DropTreeConfigAction;
+import kibu.kuhn.myfavorites.ui.DropTreeConfigActions;
 
 public class DropTree extends JTree {
 
@@ -53,7 +53,7 @@ public class DropTree extends JTree {
 
   @Override
   protected void processKeyEvent(KeyEvent e) {
-    if (DropTreeConfigAction.isCtrlUpDownKey(e)) {
+    if (DropTreeConfigActions.isCtrlUpDownKey(e)) {
       e.consume();
     }
     super.processKeyEvent(e);
