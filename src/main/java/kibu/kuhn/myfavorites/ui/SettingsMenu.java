@@ -332,6 +332,7 @@ public class SettingsMenu {
     @Override
     public void actionPerformed(ActionEvent e) {
       IPreferencesService.get().setDarkMode(((JCheckBox)e.getSource()).isSelected());
+      Icons.clearCache();
     }
   }
   

@@ -28,7 +28,7 @@ class IconsFactory {
   }
   
   public void clearCache() {
-    
+    this.icons = new HashMap<>();
   }
 
   private ImageIcon getImageIcon(final String iconName) {
