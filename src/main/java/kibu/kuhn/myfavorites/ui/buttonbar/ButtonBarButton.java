@@ -35,12 +35,12 @@ class ButtonBarButton extends JButton {
         if (e.getKeyCode() != KeyEvent.VK_ENTER) {
           return;
         }
-        performAEnterction();
+        performEnterAction();
       }
       
     }
 
-    private void performAEnterction() {
+    private void performEnterAction() {
       getAction().actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, getActionCommand()));
     }
     
