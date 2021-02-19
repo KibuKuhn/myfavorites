@@ -5,61 +5,89 @@
 <title>Manual</title>
 </head>
 <body>
-<div><H3>Manual</H3></div>
-<ul>
-<li><b>Supported file types</b><br>
-- All 'ordinary' files<br>
-- Desktop files that hold a hyperlink<br>
-- Links from a web browser. Drag &amp; drop a link from the input field of the browser into myFavorites<br>
-- Folders<br>
-- Executable files are not supported<br><br>
-</li>
-<li><b>Position favoites display</b><br>
-- When you start myFavorites the first time, favorites are being displayed at the center of the screen<br>
-- Click into the display and drag it to the desired location<br>
-- Open settings and unselect 'Adjust display position of favorites'<br>
-- To change the location again, select 'Adjust display position of favorites' and proceed as before<br><br>
-</li>
-<li><b>Manage Favorites</b><br>
-- Open myFavorites &gt; <img src="FAVORITES18" align="middle" height="18px" width="18px"/> Configure Favorites<br>
-- Follow instructions<br>
-- Use Ctrl Up and Ctrl Down respectively to move a favorite<br>
-- Use Del Key to remove a favorite<br>
-- Use Ctrl A to add an alias to the item. If present, it is displayed instead of the item's path<br>
-- Use Ctrl B to create a box. Assort your favorites with boxes<br>
-- Use Ctrl X, Ctrl C, Ctrl V to move and to copy favorites<br>
-- Close window to apply changes<br><br>
-</li>
-<li><b>Maintain Settings</b><br>
-- Right click onto myFavorites tray icon or<br>
-- Open myFavorites &gt; <img src="MENU18" align="middle" height="18px" width="18px"/> Settings<br>
-- Change language and Look and Feel as required<br>
-- Export favorites as JSON<br>
-- Import favorites from JSON<br>
-- Close window to apply changes<br><br>
-</li>
-<li><b>Help</b><br>
-- Open myFavorites &gt; <img src="HELP18" align="middle" height="18px" width="18px"/> Help<br><br>
-</li>
-<li><b>Exit myFavorites</b><br>
-- Open myFavorites &gt; <img src="CANCEL18" align="middle" height="18px" width="18px"/> Exit<br><br>
-</li>
-<li><b>Troubleshooting</b><br>
-- If myFavorites cannot read the preferences, restart it with argument <i>-Dclean.</i> This will delete all preferences<br>
-- If the tray icon looks like <img src="LIST36ERROR" align="middle" align="middle" height="36px" width="36px"/> an unexpected error occured. Please restart myFavorites.<br><br>
-</li>
-<li><b>Logging</b><br>
-- By default myFavorites.log is generated in the home diretory of the current user. The file is hidden.<br>
-- To change the location, use <i>-DlogDir=&lt;your_log_folder&gt;</i><br>
-- To change the log level, use <i>-DlogLevel=&lt;new log level&gt;</i><br>
-when starting myFavorites.
-</li>
-</ul>
-<p>
-<a href="https://github.com/KibuKuhn/myfavorites" title="Visit project site on GitHub" target="_blank">
-Visit project on GitHub
-</a>
-<br>
-<h6>Kibu Kuhn</h6>
+	<div>
+		<H3>Manual</H3>
+	</div>
+	<ul>
+		<li><b>Supported file types</b>
+			<ul>
+				<li>All 'ordinary' files</li>
+				<li>Desktop files that hold a hyperlink</li>
+				<li>Links from a web browser. Drag &amp; drop a link from the
+					input field of the browser into myFavorites</li>
+				<li>Folders</li>
+				<li>Executable files are not supported</li>
+			</ul></li>
+		<li><b>Position favoites display</b>
+			<ul>
+				<li>When you start myFavorites the first time, favorites are
+					being displayed at the center of the screen</li>
+				<li>Click into the display and drag it to the desired location</li>
+				<li>Open settings and unselect 'Adjust display position of
+					favorites'</li>
+				<li>To change the location again, select 'Adjust display
+					position of favorites' and proceed as before</li>
+			</ul></li>
+		<li><b>Manage Favorites</b>
+			<ul>
+				<li>Open myFavorites &gt; <img src="FAVORITES18" align="middle"
+					height="18px" width="18px" /> Configure Favorites
+				</li>
+				<li>Follow instructions</li>
+				<li>Use Ctrl Up and Ctrl Down respectively to move a favorite</li>
+				<li>Use Del Key to remove a favorite</li>
+				<li>Use Ctrl A to add an alias to the item. If present, it is
+					displayed instead of the item's path</li>
+				<li>Use Ctrl B to create a box. Assort your favorites with boxes</li>
+				<li>Use Ctrl X, Ctrl C, Ctrl V to move and to copy favorites</li>
+				<li>Close window to apply changes</li>
+			</ul></li>
+		<li><b>Maintain Settings</b>
+			<ul>
+				<li>Right click onto myFavorites tray icon or</li>
+				<li>Open myFavorites &gt; <img src="MENU18" align="middle"
+					height="18px" width="18px" /> Settings
+				</li>
+				<li>Change language and Look and Feel as required</li>
+				<li>Export favorites as JSON</li>
+				<li>Import favorites from JSON</li>
+				<li>Close window to apply changes</li>
+			</ul></li>
+		<li><b>Help</b>
+			<ul>
+				<li>Open myFavorites &gt; <img src="HELP18" align="middle"
+					height="18px" width="18px" /> Help
+				</li>
+			</ul></li>
+		<li><b>Exit myFavorites</b>
+			<ul>
+				<li>Open myFavorites &gt; <img src="CANCEL18" align="middle"
+					height="18px" width="18px" /> Exit
+				</li>
+			</ul></li>
+		<li><b>Troubleshooting</b>
+			<ul>
+				<li>If myFavorites cannot read the preferences, restart it with
+					argument <i>-Dclean.</i> This will delete all preferences
+				</li>
+				<li>If the tray icon looks like <img src="LIST36ERROR"
+					align="middle" align="middle" height="36px" width="36px" /> an
+					unexpected error occured. Please restart myFavorites.
+				</li>
+			</ul></li>
+		<li><b>Logging</b>
+			<ul>
+				<li>By default myFavorites.log is generated in the home
+					diretory of the current user. The file is hidden.</li>
+				<li>To change the location, use <i>-DlogDir=&lt;your_log_folder&gt;</i></li>
+				<li>To change the log level, use <i>-DlogLevel=&lt;new log
+						level&gt;</i></li>
+			</ul> when starting myFavorites.</li>
+	</ul>
+	<p>
+		<a href="https://github.com/KibuKuhn/myfavorites"
+			title="Visit project site on GitHub" target="_blank"> Visit
+			project on GitHub </a> <br>
+	<h6>Kibu Kuhn</h6>
 </body>
 </html>
