@@ -49,13 +49,14 @@ class ConfigMenu {
 
     dialog.setIconImage(Icons.getImage("list36_filled"));
     dialog.getContentPane().setLayout(new BorderLayout());
-    var dropLabel = new DropLabel();
-    dialog.getContentPane().add(dropLabel, NORTH);
+    dialog.getContentPane().add(new DropLabel(), NORTH);
     dropTree = new DropTree();
     dialog.getContentPane().add(new JScrollPane(dropTree), CENTER);
     DropTreeConfigActions action = new DropTreeConfigActions();
     dropTree.addKeyListener(action);
-    initDrop(dropLabel);
+    Component glassPane = dialog.getGlassPane();
+    glassPane.setVisible(true);
+	initDrop(glassPane);
     dialog.pack();
     dialog.setSize(400, 400);
     dialog.setLocationRelativeTo(null);

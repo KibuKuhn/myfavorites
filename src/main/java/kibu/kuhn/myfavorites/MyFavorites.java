@@ -3,6 +3,8 @@ package kibu.kuhn.myfavorites;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.concurrent.TimeUnit;
+
 import javax.swing.SwingUtilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +29,10 @@ public class MyFavorites {
 
     if (System.getProperty("delay") != null) {
       try {
-        var delay = System.getProperty("delay");
-        var currentThread = Thread.currentThread();
-        synchronized (currentThread) {
-          currentThread.wait(Integer.valueOf(delay));
-        }
+        var delayProp = System.getProperty("delay");
+        var delay = Integer.parseInt(delayProp);
+        TimeUnit.MILLISECONDS.sleep(delay);
+       
       } catch (Exception ex) {
         LOGGER.error(ex.getMessage(), ex);
         throw new IllegalStateException(ex);

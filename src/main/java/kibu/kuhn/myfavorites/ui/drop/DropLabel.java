@@ -1,8 +1,9 @@
 package kibu.kuhn.myfavorites.ui.drop;
 
 import java.awt.Color;
-import java.awt.Dimension;
+
 import javax.swing.JLabel;
+
 import kibu.kuhn.myfavorites.ui.IGui;
 
 public final class DropLabel extends JLabel {
@@ -17,12 +18,5 @@ public final class DropLabel extends JLabel {
     super(text);
     setForeground(Color.GRAY);
     setHorizontalAlignment(CENTER);
-  }
-
-  @Override
-  public Dimension getPreferredSize() {
-    var size = super.getPreferredSize();
-    size.height = 100;
-    return size;
   }
 }
