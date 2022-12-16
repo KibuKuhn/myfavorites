@@ -1,6 +1,11 @@
 # myfavorites
 Access your favorite files and folders easily
 
+# What's new
+* Build with maven wrapper
+* Create a new favorite manually with CTRL+F
+
+# What is this?
 Drag & drop your files, folders and web links into myfavorites. They are then presented in a list from where you can access them easliy.
 Although myfavorites is a Java 11 application, it's built and tested mainly for Linux.
 See Wiki for a brief manual.

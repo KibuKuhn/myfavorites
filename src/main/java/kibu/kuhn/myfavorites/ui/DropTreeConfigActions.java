@@ -1,14 +1,6 @@
 package kibu.kuhn.myfavorites.ui;
 
-import static java.awt.event.KeyEvent.VK_A;
-import static java.awt.event.KeyEvent.VK_B;
-import static java.awt.event.KeyEvent.VK_C;
-import static java.awt.event.KeyEvent.VK_DELETE;
-import static java.awt.event.KeyEvent.VK_DOWN;
-import static java.awt.event.KeyEvent.VK_ENTER;
-import static java.awt.event.KeyEvent.VK_UP;
-import static java.awt.event.KeyEvent.VK_V;
-import static java.awt.event.KeyEvent.VK_X;
+import static java.awt.event.KeyEvent.*;
 import static javax.swing.JOptionPane.QUESTION_MESSAGE;
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 import static javax.swing.JOptionPane.YES_OPTION;
@@ -41,6 +33,8 @@ public class DropTreeConfigActions extends KeyAdapter {
   private CopyPasteHandler copyPasteHandler = new CopyPasteHandler();
   private OpenCloseHandler openCloseHandler = new OpenCloseHandler();
 
+  private ManualItemHandler manualItemHandler = new ManualItemHandler();
+
   @Override
   public void keyPressed(KeyEvent e) {
     switch (e.getKeyCode()) {
@@ -71,7 +65,8 @@ public class DropTreeConfigActions extends KeyAdapter {
       case VK_ENTER:
         openCloseHandler.accept(e);
         break;
-
+      case VK_F:
+        manualItemHandler.createFavorite(e);
     }
   }
 
@@ -153,6 +148,5 @@ public class DropTreeConfigActions extends KeyAdapter {
       model.nodeStructureChanged(parent);
       tree.getSelectionModel().setSelectionPath(path);
     }
-  };
-
+  }
 }
