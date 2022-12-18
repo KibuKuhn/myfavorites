@@ -1,14 +1,13 @@
 package kibu.kuhn.myfavorites;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.RandomAccessFile;
-import java.util.concurrent.TimeUnit;
-
-import javax.swing.SwingUtilities;
+import kibu.kuhn.myfavorites.ui.IGui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import kibu.kuhn.myfavorites.ui.IGui;
+
+import javax.swing.*;
+import java.io.File;
+import java.io.RandomAccessFile;
+import java.util.concurrent.TimeUnit;
 
 public class MyFavorites {
 
@@ -70,18 +69,19 @@ public class MyFavorites {
     try {
       var file = new File(lockFile);
       try (var randomAccessFile = new RandomAccessFile(file, "rw")) {
-        var fileLock = randomAccessFile.getChannel().tryLock();
-        if (fileLock != null) {
-          Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-              fileLock.release();
-              randomAccessFile.close();
-              file.delete();
-            } catch (Exception e) {
-              LOGGER.error("Unable to remove lock file: " + lockFile, e);
-            }
-          }));
-          return true;
+        try(var fileLock = randomAccessFile.getChannel().tryLock()) {
+          if (fileLock != null) {
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+              try {
+                fileLock.release();
+                randomAccessFile.close();
+                file.delete();
+              } catch (Exception e) {
+                LOGGER.error("Unable to remove lock file: " + lockFile, e);
+              }
+            }));
+            return true;
+          }
         }
       }
     } catch (Exception e) {
