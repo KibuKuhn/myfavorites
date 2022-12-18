@@ -1,4 +1,4 @@
-# myfavorites
+# MyFavorites
 Access your favorite files and folders easily
 
 # What's new
@@ -6,17 +6,19 @@ Access your favorite files and folders easily
 * Create a new favorite manually with CTRL+F
 
 # What is this?
-Drag & drop your files, folders and web links into myfavorites. They are then presented in a list from where you can access them easliy.
-Although myfavorites is a Java 11 application, it's built and tested mainly for Linux.
+Drag & drop your files, folders and web links into MyFavorites. They are then presented in a list from where you can access them easliy.
+Although MyFavorites is a Java 11 application, it's built and tested mainly for Linux.
 See Wiki for a brief manual.
-When started myfavorites displays a small icon in the system tray from where you can access it.
-Spported languages are english, german.
+When started MyFavorites displays a small icon in the system tray from where you can access it.
+Supported languages are english, german.
+
+# How to build
+* Download project into a folder of your choice
+* Open a terminal in this folder and invoke mvnw install or mvnw.cmd install resp.
 
 # Issues
-* When started automatically the tray icon may not be visible.
-This is because the system tray is not yet up to support Java. See error log.
-You can start myfavorites with -Ddelay=&lt;your-delay-in-millis&gt;. Try 5000 millis if you get this problem.
-* Currently myfavoriites expects the system tray on top of the screen.
+* MyFavorites waits max. 5 seconds until thr system tray is ready.
+* Currently, MyFavorites expects the system tray on top of the screen.
 
 
 System tray

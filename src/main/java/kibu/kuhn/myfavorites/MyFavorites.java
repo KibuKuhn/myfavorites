@@ -20,23 +20,12 @@ public class MyFavorites {
   }
   
   private static final Logger LOGGER = LoggerFactory.getLogger(MyFavorites.class);
+  private static final int RETRY_MAX_WAIT = 5; //seconds
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
     if (!lockInstance("MyFavorites.lock")) {
       LOGGER.info("MyFavorites already running. Exiting.");
       System.exit(0);
-    }
-
-    if (System.getProperty("delay") != null) {
-      try {
-        var delayProp = System.getProperty("delay");
-        var delay = Integer.parseInt(delayProp);
-        TimeUnit.MILLISECONDS.sleep(delay);
-       
-      } catch (Exception ex) {
-        LOGGER.error(ex.getMessage(), ex);
-        throw new IllegalStateException(ex);
-      }
     }
 
     SwingUtilities.invokeLater(MyFavorites::new);
@@ -44,11 +33,23 @@ public class MyFavorites {
 
 
   MyFavorites() {
-    if (!IGui.get().checkSupport()) {
-      System.exit(0);
-    }
-
+    checkSupport();
     IGui.get().init();
+  }
+
+  private void checkSupport() {
+    int wait = 0;
+    try {
+      while (!IGui.get().checkSupport()) {
+        TimeUnit.SECONDS.sleep(1);
+        wait++;
+        if (wait > RETRY_MAX_WAIT) {
+          throw new IllegalStateException("Max retries for checkSupport exceeded");
+        }
+      }
+    } catch (InterruptedException ex) {
+      throw new IllegalStateException(ex);
+    }
   }
 
 
@@ -68,10 +69,10 @@ public class MyFavorites {
   private static boolean lockInstance(String lockFile) {
     try {
       var file = new File(lockFile);
-      var randomAccessFile = new RandomAccessFile(file, "rw");
-      var fileLock = randomAccessFile.getChannel().tryLock();
-      if (fileLock != null) {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      try (var randomAccessFile = new RandomAccessFile(file, "rw")) {
+        var fileLock = randomAccessFile.getChannel().tryLock();
+        if (fileLock != null) {
+          Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
               fileLock.release();
               randomAccessFile.close();
@@ -79,8 +80,9 @@ public class MyFavorites {
             } catch (Exception e) {
               LOGGER.error("Unable to remove lock file: " + lockFile, e);
             }
-        }));
-        return true;
+          }));
+          return true;
+        }
       }
     } catch (Exception e) {
       LOGGER.error("Unable to create and/or lock file: " + lockFile, e);
