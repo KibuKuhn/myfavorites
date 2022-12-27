@@ -1,41 +1,22 @@
 package kibu.kuhn.myfavorites.ui;
 
-import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
-import static java.awt.GridBagConstraints.BOTH;
-import static java.awt.GridBagConstraints.EAST;
-import static java.awt.GridBagConstraints.HORIZONTAL;
-import static java.awt.GridBagConstraints.NONE;
-import static java.awt.GridBagConstraints.RELATIVE;
-import static java.awt.GridBagConstraints.REMAINDER;
-import static java.awt.GridBagConstraints.WEST;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.function.Consumer;
-import javax.swing.AbstractAction;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import kibu.kuhn.myfavorites.prefs.IPreferencesService;
 import kibu.kuhn.myfavorites.ui.xport.XPortButton;
 import kibu.kuhn.myfavorites.ui.xport.XPortPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.function.Consumer;
+
+import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
+import static java.awt.GridBagConstraints.*;
 
 public class SettingsMenu {
 
@@ -71,7 +52,13 @@ public class SettingsMenu {
     Locale locale = IPreferencesService.get().getLocale();
     locales.setSelectedItem(locale);
     messageAction.setEnabled(true);
-    dialog.setVisible(visible);
+    Optional<Point> location = IPreferencesService.get().getSettingsMenuLocation();
+    if (location.isEmpty()) {
+      dialog.setLocationRelativeTo(null);
+    } else {
+      dialog.setLocation(location.get());
+    }
+    dialog.setVisible(true);
   }
 
 
@@ -83,7 +70,7 @@ public class SettingsMenu {
       @Override
       public void windowClosing(WindowEvent e) {
         doClose(e);
-      };
+      }
     });
 
     //l&f
@@ -226,12 +213,12 @@ public class SettingsMenu {
 
     dialog.pack();
     dialog.setSize(WIDTH, HEIGHT);
-    dialog.setLocationRelativeTo(null);
   }
 
   private void saveSettings() {
     IPreferencesService.get().saveLaf((LookAndFeelInfo)lafs.getSelectedItem());
     IPreferencesService.get().saveLocale((Locale)locales.getSelectedItem());
+    IPreferencesService.get().saveSettingsMenuLocation(dialog.getLocationOnScreen());
   }
 
   private ComboBoxModel<Locale> createLocalesModel() {
@@ -252,9 +239,9 @@ public class SettingsMenu {
   }
 
   private void doClose(WindowEvent e) {
+    saveSettings();
     dialog.dispose();
     dialog = null;
-    saveSettings();
     if (windowCloseAction == null) {
       return;
     }
@@ -311,7 +298,7 @@ public class SettingsMenu {
   }
 
 
-  private class ConfirmDeleteItemAction implements ActionListener {
+  private static class ConfirmDeleteItemAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -319,7 +306,7 @@ public class SettingsMenu {
     }
   }
 
-  private class AdjustLocationAction implements ActionListener {
+  private static class AdjustLocationAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -327,7 +314,7 @@ public class SettingsMenu {
     }
   }
   
-  private class DarkModeAction implements ActionListener {
+  private static class DarkModeAction implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {

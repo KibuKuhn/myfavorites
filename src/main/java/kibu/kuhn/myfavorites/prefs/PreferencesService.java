@@ -1,18 +1,20 @@
 package kibu.kuhn.myfavorites.prefs;
 
-import java.awt.Point;
-import java.io.File;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import kibu.kuhn.myfavorites.MyFavorites;
 import kibu.kuhn.myfavorites.ui.drop.RootNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
+import java.awt.*;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 class PreferencesService implements IPreferencesService {
 
@@ -26,6 +28,10 @@ class PreferencesService implements IPreferencesService {
   static final String ITEMS = "items";
   private static final String CLEAN = "clean";
   private static final String CONFIRM_DELETE_ITEM = "confirmDeleteItem";
+  private static final String SETTINGSMENU_POS_X = "settingsMenuPosX";
+  private static final String SETTINGSMENU_POS_Y = "settingsMenuPosY";
+  private static final String CONFIGMENU_POS_X = "configMenuPosX";
+  private static final String CONFIGMENU_POS_Y = "configMenuPosY";
 
   private static IPreferencesService service = new PreferencesService();
 
@@ -69,8 +75,7 @@ class PreferencesService implements IPreferencesService {
     }
 
     try {
-      var node = (RootNode)mapper.mapToNode(items);
-      return node;
+      return (RootNode)mapper.mapToNode(items);
     } catch (JsonProcessingException e) {
       throw new IllegalStateException(e);
     }
@@ -181,5 +186,41 @@ class PreferencesService implements IPreferencesService {
   @Override
   public boolean isDarkMode() {
     return getPreferences().getBoolean(DARK_MODE, false);
+  }
+
+  @Override
+  public Optional<Point> getSettingsMenuLocation() {
+    int x = getPreferences().getInt(SETTINGSMENU_POS_X, -1);
+    int y = getPreferences().getInt(SETTINGSMENU_POS_Y, -1);
+    if (x < 0 || y < 0) {
+      return Optional.empty();
+    }
+
+    return Optional.of(new Point(x, y));
+
+  }
+
+  @Override
+  public void saveSettingsMenuLocation(Point locationOnScreen) {
+    getPreferences().putInt(SETTINGSMENU_POS_X, locationOnScreen.x);
+    getPreferences().putInt(SETTINGSMENU_POS_Y, locationOnScreen.y);
+  }
+
+  @Override
+  public Optional<Point> getConfigMenuLocation() {
+    int x = getPreferences().getInt(CONFIGMENU_POS_X, -1);
+    int y = getPreferences().getInt(CONFIGMENU_POS_Y, -1);
+    if (x < 0 || y < 0) {
+      return Optional.empty();
+    }
+
+    return Optional.of(new Point(x, y));
+
+  }
+
+  @Override
+  public void saveConfigMenuLocation(Point locationOnScreen) {
+    getPreferences().putInt(CONFIGMENU_POS_X, locationOnScreen.x);
+    getPreferences().putInt(CONFIGMENU_POS_Y, locationOnScreen.y);
   }
 }

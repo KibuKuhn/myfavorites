@@ -3,6 +3,7 @@ package kibu.kuhn.myfavorites.prefs;
 import java.awt.Point;
 import java.io.File;
 import java.util.Locale;
+import java.util.Optional;
 import javax.swing.UIManager.LookAndFeelInfo;
 import kibu.kuhn.myfavorites.ui.drop.RootNode;
 
@@ -51,5 +52,12 @@ public interface IPreferencesService {
 
   boolean isDarkMode();
 
+    Optional<Point> getSettingsMenuLocation();
+
+  void saveSettingsMenuLocation(Point locationOnScreen);
+
+  Optional<Point> getConfigMenuLocation();
+
+  void saveConfigMenuLocation(Point locationOnScreen);
 }
 

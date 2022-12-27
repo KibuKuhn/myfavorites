@@ -49,10 +49,6 @@ class HelpMenu {
     if (dialog == null) {
       return;
     }
-    if (!visible) {
-      dialog.setVisible(false);
-      return;
-    }
 
     dialog.setVisible(visible);
   }
@@ -66,7 +62,7 @@ class HelpMenu {
       @Override
       public void windowClosing(WindowEvent e) {
         doClose(e);
-      };
+      }
     });
 
     dialog.setIconImage(Icons.getImage("list36_filled"));
@@ -113,11 +109,10 @@ class HelpMenu {
   private String getText() {
     var reader = new BufferedReader(new InputStreamReader(getStream(), StandardCharsets.UTF_8));
     //@formatter:off
-    var html = reader.lines()
-                        .map(new ImageUrlGenerator())
-                        .collect(Collectors.joining("\n"));
+    return reader.lines()
+                 .map(new ImageUrlGenerator())
+                 .collect(Collectors.joining("\n"));
     //@formatter:on
-    return html;
   }
 
   private InputStream getStream() {
@@ -156,7 +151,7 @@ class HelpMenu {
         if (line.contains(img)) {
           line = line.replace(img, getImgeUrl(img));
         }
-      };
+      }
       return line;
     }
 
