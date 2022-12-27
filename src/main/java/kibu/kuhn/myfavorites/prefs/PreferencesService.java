@@ -173,7 +173,7 @@ class PreferencesService implements IPreferencesService {
     }
 
     var split = s.split("/");
-    return new Point(Integer.valueOf(split[0]), Integer.valueOf(split[1]));
+    return new Point(Integer.parseInt(split[0]), Integer.parseInt(split[1]));
   }
 
 
