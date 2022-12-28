@@ -1,8 +1,11 @@
 package kibu.kuhn.myfavorites.ui;
 
-import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
-import java.awt.BorderLayout;
-import java.awt.Desktop;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
+import javax.swing.event.HyperlinkEvent;
+import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -18,14 +21,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import javax.swing.JDialog;
-import javax.swing.JEditorPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import static java.awt.Dialog.ModalityType.APPLICATION_MODAL;
 
 class HelpMenu {
 
@@ -74,15 +71,11 @@ class HelpMenu {
     htmlPane.setOpaque(true);
     htmlPane.setText(getText());
     htmlPane.setCaretPosition(0);
-    htmlPane.addHyperlinkListener(new HyperlinkListener() {
-
-      @Override
-      public void hyperlinkUpdate(HyperlinkEvent e) {
+    htmlPane.addHyperlinkListener(e -> {
         if (HyperlinkEvent.EventType.ACTIVATED.toString().equals(e.getEventType().toString())) {
           URL url = e.getURL();
           openLink(url);
         }
-      }
     });
 
     pane.add(new JScrollPane(htmlPane));
@@ -131,16 +124,14 @@ class HelpMenu {
     else {
       htmlPane.setText(IGui.get().getI18n("HelpPane.System.Web.Browser.not.supported"));
     }
-
   }
 
-  private static class ImageUrlGenerator implements Function<String, String> {
+  private  static class ImageUrlGenerator implements Function<String, String> {
 
-    private static Set<String> images = new HashSet<>();
+    private static final Set<String> images = new HashSet<>();
     static {
       Collections.addAll(images, "FAVORITES18", "MENU18", "HELP18", "CANCEL18", "LIST36ERROR");
     }
-
 
     @Override
     public String apply(String line) {
